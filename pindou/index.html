@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>拼豆图纸</title>
+    
+    <!-- 引入 App 基础样式 -->
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/modal.css">
+    <!-- 引入 Pindou 原有样式 -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="../js/config.js"></script>
+    <script src="../js/notification-native.js"></script>
+    <script src="../js/global-notification.js"></script>
+    <script src="../js/theme.js"></script>
+
+    <style>
+        /* 适配 App 样式 */
+        body {
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            /* 默认亮色背景 */
+            background-color: #f5f7fa; 
+        }
+
+        /* 覆盖 pindou style.css 中的 body 设置 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        /* 调整容器，去掉原有的 box-shadow 和 margin */
+        .container {
+            box-shadow: none;
+            margin: 0;
+            max-width: none;
+            border-radius: 0;
+            background: transparent;
+            padding: 10px;
+            min-height: auto;
+        }
+
+        /* 适配暗黑模式 */
+        body.dark-theme {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e6f0;
+        }
+        
+        body.dark-theme .container {
+            background: transparent;
+        }
+
+        body.dark-theme .controls, 
+        body.dark-theme .stats-panel {
+            background-color: rgba(34, 36, 42, 0.8);
+            color: #e0e6f0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-theme .control-group label {
+            color: #b0b8c4;
+        }
+
+        body.dark-theme .custom-file-upload {
+            border-color: #7bb6ff;
+            color: #7bb6ff;
+        }
+        body.dark-theme .custom-file-upload:hover {
+            background-color: #7bb6ff;
+            color: #fff;
+        }
+        
+        body.dark-theme input[type="number"],
+        body.dark-theme select {
+            background-color: #2a303c;
+            border-color: #4a5568;
+            color: #e0e6f0;
+        }
+        
+        body.dark-theme .canvas-wrapper {
+            background-color: #2a303c;
+            border-color: #4a5568;
+        }
+
+        body.dark-theme .color-info, 
+        body.dark-theme #colorList li {
+            background-color: #2a303c;
+            color: #e0e6f0;
+        }
+        
+        body.dark-theme .color-name {
+            color: #a0aec0;
+        }
+
+        /* 头部适配 */
+        .home-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+        }
+        
+        body.dark-theme .home-header {
+            background: rgba(34, 36, 42, 0.85);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            color: #e0e6f0;
+        }
+
+        .header-back {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            flex-grow: 1;
+        }
+
+        /* 隐藏原有的 header */
+        .container > header {
+            display: none;
+        }
+        
+        /* 调整主内容区 padding */
+        main {
+            padding-top: 10px;
+            padding-bottom: 20px;
+            width: 100%;
+        }
+
+        /* 按钮适配 */
+        .primary-btn {
+            background-color: #7bb6ff; 
+            box-shadow: 0 4px 6px rgba(123, 182, 255, 0.3);
+        }
+        .primary-btn:hover {
+            background-color: #5a96e6;
+        }
+        
+        /* 移动端优化 */
+        .controls {
+            padding: 15px;
+        }
+        
+        /* 底部版权适配 */
+        .footer {
+            color: #8ca2c7;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="home-header">
+        <span class="header-back" onclick="history.back()">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </span>
+        <span class="header-title">拼豆图纸</span>
+    </header>
+
+    <div class="container">
+        <!-- 原有的 header 仍然在 DOM 中但被 CSS 隐藏，为了保持 script.js 兼容性，我们保留结构但不显示 -->
+        <header>
+            <h1>拼豆图纸</h1>
+        </header>
+
+        <main>
+            <section class="controls">
+                <div class="control-group file-upload">
+                    <label for="imageUpload" class="custom-file-upload">
+                        选择图片
+                    </label>
+                    <input type="file" id="imageUpload" accept="image/*">
+                </div>
+
+                <div class="control-group">
+                    <label for="gridWidth">宽度 (珠子数量):</label>
+                    <div class="range-input-wrapper">
+                        <input type="range" id="gridWidth" min="10" max="150" value="50">
+                        <input type="number" id="gridWidthInput" min="10" max="150" value="50">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="paletteSelect">色卡选择:</label>
+                    <select id="paletteSelect">
+                        <option value="mard72" selected>MARD 72色</option>
+                        <option value="basic">基础 16 色</option>
+                        <option value="grayscale">黑白灰</option>
+                    </select>
+                </div>
+                
+                <div class="control-group checkbox-group">
+                    <input type="checkbox" id="showGrid" checked>
+                    <label for="showGrid">显示网格</label>
+                </div>
+                
+                <button id="processBtn" class="primary-btn">生成图纸</button>
+                <button id="downloadBtn" class="secondary-btn" disabled>保存图片</button>
+            </section>
+
+            <section class="preview-area">
+                <div class="canvas-wrapper">
+                    <div id="emptyState" class="empty-state">
+                        <div class="empty-icon">🧩</div>
+                        <p>请先上传图片</p>
+                    </div>
+                    <canvas id="mainCanvas"></canvas>
+                    <div id="pixelTooltip" class="tooltip"></div>
+                </div>
+
+                <div id="stats" class="stats-panel" style="display: none;">
+                    <div class="stats-header">
+                        <h3>用量清单</h3>
+                    </div>
+                    <ul id="colorList"></ul>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>拼豆图纸 &copy; 2026 | YandH 千纸雏鸢</p>
+        </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

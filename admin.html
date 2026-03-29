@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>管理员控制台</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <script src="js/config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/notification-native.js"></script>
+  <script src="js/global-notification.js"></script>
+  <script type="text/javascript">
+    let firstBack = null;
+
+    document.addEventListener('plusready', function(){
+      plus.key.addEventListener('backbutton', function(){
+        if(!firstBack){
+          firstBack = new Date().getTime();
+          plus.nativeUI.toast('再滑动一次退出应用');
+          setTimeout(function(){
+            firstBack = null;
+          }, 2000);
+        } else if(new Date().getTime() - firstBack < 2000){
+          plus.runtime.quit();
+        }
+      }, false);
+    });
+  </script>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="header-title">
+      <span class="header-emoji">⚙️</span>
+      <span class="header-main">管理员控制台</span>
+    </div>
+    <div class="admin-info">
+      <span id="admin-username"></span>
+      <button id="logout-btn" onclick="logout()">退出</button>
+    </div>
+  </header>
+
+  <main class="admin-content">
+    <!-- 统计概览 -->
+    <section class="stats-section">
+      <h3>系统概览</h3>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="total-users">-</div>
+          <div class="stat-label">总用户数</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="online-users">-</div>
+          <div class="stat-label">在线用户</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="total-posts">-</div>
+          <div class="stat-label">总动态数</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="today-posts">-</div>
+          <div class="stat-label">今日动态</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 用户管理 -->
+    <section class="users-section">
+      <div class="section-header">
+        <h3>用户管理</h3>
+        <div class="search-box">
+          <input type="text" id="user-search" placeholder="搜索用户...">
+          <button onclick="searchUsers()">搜索</button>
+        </div>
+      </div>
+      <div class="users-table-container">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>用户名</th>
+              <th>密码</th>
+              <th>注册时间</th>
+              <th>最后登录</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <!-- 用户列表将通过JavaScript动态填充 -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 系统日志 -->
+    <section class="logs-section">
+      <div class="section-header">
+        <h3>系统日志</h3>
+        <button onclick="refreshLogs()">刷新</button>
+      </div>
+      <div class="logs-container" id="logs-container">
+        <!-- 日志内容将通过JavaScript动态填充 -->
+      </div>
+    </section>
+  </main>
+
+  <nav class="admin-nav">
+    <button class="active" onclick="showSection('stats')"><span class="nav-icon">📊</span>概览</button>
+    <button onclick="showSection('users')"><span class="nav-icon">👥</span>用户</button>
+    <button onclick="showSection('logs')"><span class="nav-icon">📝</span>日志</button>
+    <button onclick="goHome()"><span class="nav-icon">🏠</span>返回</button>
+  </nav>
+
+  <!-- 用户详情模态框 -->
+  <div id="user-detail-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>用户详情</h3>
+        <span class="close" onclick="closeUserModal()">&times;</span>
+      </div>
+      <div class="modal-body" id="user-detail-content">
+        <!-- 用户详情内容 -->
+      </div>
+      <div class="modal-footer" id="user-detail-actions" style="padding: 15px 20px; border-top: 1px solid #eee; text-align: right;">
+        <button id="reset-password-btn" class="action-btn edit-btn" onclick="resetUserPassword()" style="display: none;">重置密码</button>
+        <button class="action-btn view-btn" onclick="closeUserModal()">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 重置密码模态框 -->
+  <div id="reset-password-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>重置用户密码</h3>
+        <span class="close" onclick="closeResetPasswordModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="new-password">新密码:</label>
+          <input type="text" id="new-password" placeholder="输入新密码" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-top: 5px;">
+        </div>
+        <div class="form-group" style="margin-top: 15px;">
+          <button onclick="generateRandomPassword()" style="background: #17a2b8; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-right: 10px;">生成随机密码</button>
+          <button onclick="confirmResetPassword()" style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">确认重置</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 密码信息模态框 -->
+  <div id="password-info-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>密码信息</h3>
+        <span class="close" onclick="closePasswordInfoModal()">&times;</span>
+      </div>
+      <div class="modal-body" id="password-info-content">
+        <!-- 密码信息内容 -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/modal.js"></script>
+  <script src="js/pages/admin.js"></script>
+</body>
+</html> 

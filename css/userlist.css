@@ -1,0 +1,17 @@
+body.dark-theme {
+  background: linear-gradient(135deg, #181c24 0%, #23242a 100%) !important;
+}
+body.dark-theme::before {
+  content: '';
+  position: fixed !important;
+  left: 0 !important; top: 0 !important; right: 0 !important; bottom: 0 !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  display: block !important;
+  background:
+    radial-gradient(circle at 80% 20%, #ffbfa822 0%, transparent 60%),
+    radial-gradient(circle at 15% 70%, #ff6f9122 0%, transparent 70%),
+    radial-gradient(circle at 60% 80%, #fff2 0%, transparent 80%),
+    repeating-radial-gradient(circle at 50% 50%, #fff2 0 1px, transparent 1px 100px) !important;
+  opacity: 0.35 !important;
+} 

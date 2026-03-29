@@ -1,0 +1,1138 @@
+html, body {
+  min-height: 100vh !important;
+  height: 100% !important;
+  position: relative !important;
+  z-index: 0 !important;
+  overflow-x: hidden !important;
+}
+
+body::before,
+body.dark-theme::before {
+  content: '';
+  position: fixed !important;
+  left: 0 !important; top: 0 !important; right: 0 !important; bottom: 0 !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  display: block !important;
+}
+
+body::before {
+  background:
+    radial-gradient(circle at 80% 20%, #ffd6e0 0%, transparent 60%),
+    radial-gradient(circle at 15% 70%, #ffe6b3 0%, transparent 70%),
+    radial-gradient(circle at 60% 80%, #fffbe6 0%, transparent 80%) !important;
+  opacity: 0.55 !important;
+}
+
+body.dark-theme::before {
+  background:
+    radial-gradient(circle at 80% 20%, #ffbfa822 0%, transparent 60%),
+    radial-gradient(circle at 15% 70%, #ff6f9122 0%, transparent 70%),
+    radial-gradient(circle at 60% 80%, #fff2 0%, transparent 80%),
+    repeating-radial-gradient(circle at 50% 50%, #fff2 0 1px, transparent 1px 100px) !important;
+  opacity: 0.35 !important;
+}
+
+/* Light theme variables */
+body:not(.dark-theme) {
+  --bg-color-light: #f6f8fa;
+  --bg-color-header: rgba(255, 255, 255, 0.85);
+  --header-shadow: rgba(0,0,0,0.05);
+  --text-color-light: #333;
+  --text-color-medium: #666;
+  --border-color: #ddd;
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --card-bg: #fff;
+  --input-border: #ddd;
+  --input-focus-shadow: rgba(0,122,255,0.2);
+  --modal-bg: #fefefe;
+  --modal-shadow: rgba(0,0,0,0.2);
+  --modal-cancel-btn-bg: #f0f0f0;
+  --modal-cancel-btn-color: #333;
+  --section-border: #e0e0e0;
+  --item-bg: #f9f9f9;
+  --item-border: #eee;
+  --item-description-border: #eee;
+  --edit-btn-shadow: rgba(240,173,78,0.2);
+  --delete-btn-shadow: rgba(217,83,79,0.2);
+  --button-hover-shadow: rgba(0, 122, 255, 0.25);
+  --add-button-hover-shadow: rgba(40, 167, 69, 0.25);
+}
+
+/* Dark theme variables and styles */
+body.dark-theme {
+  background: linear-gradient(135deg, #181c24 0%, #23242a 100%) !important;
+  --bg-color-light: #282c34;
+  --bg-color-header: rgba(26, 30, 36, 0.85);
+  --header-shadow: rgba(0,0,0,0.4);
+  --text-color-light: #e0e0e0;
+  --text-color-medium: #bbbbbb;
+  --border-color: #555;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --card-bg: #3a404b;
+  --input-border: #777;
+  --input-focus-shadow: rgba(0,122,255,0.4);
+  --modal-bg: #343a40;
+  --modal-shadow: rgba(0,0,0,0.6);
+  --modal-cancel-btn-bg: #4a4f58;
+  --modal-cancel-btn-color: #e0e0e0;
+  --section-border: #555;
+  --item-bg: #2d3138;
+  --item-border: #444;
+  --item-description-border: #444;
+  --edit-btn-shadow: rgba(240,173,78,0.4);
+  --delete-btn-shadow: rgba(217,83,79,0.4);
+  --button-hover-shadow: rgba(0, 122, 255, 0.4);
+  --add-button-hover-shadow: rgba(40, 167, 69, 0.4);
+
+  color: var(--text-color-light);
+}
+
+header {
+  background: var(--bg-color-header);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-color-light);
+  display: flex;
+  align-items: center;
+  padding: 14px 12px;
+  font-size: 20px;
+  box-shadow: 0 4px 20px var(--header-shadow);
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 999;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+#back-btn {
+  background: #fff;
+  color: #007aff;
+  border: none;
+  border-radius: 18px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+#back-btn:hover {
+  background: #e0e0e0; /* Slightly darker on hover */
+  box-shadow: 0 4px 12px var(--button-hover-shadow);
+  transform: translateY(-2px);
+}
+#back-btn:active {
+  transform: scale(0.96);
+}
+header span {
+  flex: 1;
+  text-align: right;
+  margin-right: 10px;
+  font-weight: bold;
+  font-size: 20px;
+}
+main {
+  padding: 70px 10px 90px 10px; /* Adjust top padding for fixed header and bottom padding for nav */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1; /* Allow main to fill available space */
+  overflow-y: auto; /* Ensure main is scrollable */
+}
+.anniv-info {
+  text-align: center;
+  margin-bottom: 30px;
+  background: var(--card-bg);
+  border-radius: 18px;
+  box-shadow: 0 2px 12px var(--shadow-color);
+  padding: 24px 30px;
+  animation: fadeInDown 0.7s;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+.anniv-info:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px var(--shadow-color);
+}
+.anniv-info div { font-size: 22px; margin: 8px 0; }
+#days-count {
+  font-size: 54px;
+  font-weight: bold;
+  background: linear-gradient(90deg,#007aff,#00c6ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.anniv-set {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  background: var(--card-bg);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  padding: 12px 18px;
+  animation: fadeInUp 0.7s;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.anniv-set.hide { display: none; }
+.anniv-set label {
+  font-size: 16px;
+  color: var(--text-color-light);
+}
+.anniv-set input[type="date"] {
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1.5px solid var(--input-border);
+  padding: 6px 8px;
+  background: var(--card-bg);
+  color: var(--text-color-light);
+  transition: border 0.2s, background 0.3s, color 0.3s;
+}
+.anniv-set input[type="date"]:focus {
+  border-color: #007aff;
+  outline: none;
+  box-shadow: 0 0 0 3px var(--input-focus-shadow);
+}
+.anniv-set button {
+  background: linear-gradient(90deg,#007aff,#00c6ff);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 8px 18px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,122,255,0.08);
+  transition: transform 0.1s;
+}
+.anniv-set button:active { transform: scale(0.96); }
+.anniv-set-toggle {
+  margin-top: 10px;
+  background: linear-gradient(90deg,#007aff,#00c6ff);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 8px 18px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,122,255,0.08);
+  transition: transform 0.1s;
+}
+.anniv-set-toggle:active { transform: scale(0.96); }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px);} to { opacity: 1; transform: none; } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px);} to { opacity: 1; transform: none; } }
+@media (max-width: 500px) {
+  body { font-size: 16px; }
+  header { font-size: 17px; padding: 10px 6px; }
+  #back-btn { font-size: 15px; padding: 7px 10px; }
+  main { padding: 60px 2px 80px 2px; /* Adjusted padding for smaller screens */
+  }
+  .anniv-info div { font-size: 18px; }
+  #days-count { font-size: 36px; }
+  .anniv-set label, .anniv-set input[type="date"], .anniv-set button, .anniv-set-toggle { font-size: 15px; }
+}
+
+/* New styles for Add Anniversary functionality */
+
+.add-anniversary-container {
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.add-btn-modern {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4), 0 4px 15px rgba(118, 75, 162, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform-style: preserve-3d;
+}
+
+.add-btn-modern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.6s;
+}
+
+.add-btn-modern:hover {
+  transform: translateY(-3px) rotateX(5deg);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5), 0 8px 25px rgba(118, 75, 162, 0.3);
+}
+
+.add-btn-modern:hover::before {
+  left: 100%;
+}
+
+.add-btn-modern:active {
+  transform: translateY(-1px) rotateX(2deg) scale(0.98);
+}
+
+.add-btn-icon {
+  font-size: 18px;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.add-btn-plus {
+  font-size: 20px;
+  font-weight: 700;
+  margin-left: 5px;
+  transition: transform 0.3s;
+}
+
+.add-btn-modern:hover .add-btn-plus {
+  transform: rotate(180deg);
+}
+
+@keyframes sparkle {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(10deg); }
+}
+
+.modal {
+  display: flex; /* Use flexbox to center content */
+  position: fixed; /* Cover the whole screen */
+  z-index: 1000; /* High z-index to be on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Enable scroll if content is too long */
+  background-color: var(--modal-shadow); /* Black w/ opacity */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal.hide {
+  display: none;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.3);
+  margin: auto;
+  padding: 0;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s;
+  overflow: hidden;
+}
+
+body.dark-theme .modal-content {
+  background: linear-gradient(135deg, rgba(52,58,64,0.95) 0%, rgba(33,37,41,0.95) 100%);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  border-radius: 24px 24px 0 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+  opacity: 0.8;
+}
+
+.modal-close:hover {
+  background: rgba(255,255,255,0.2);
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.modal-content > *:not(.modal-header) {
+  margin: 0 25px;
+}
+
+.modal-content > .modal-actions {
+  margin: 20px 25px 25px 25px;
+}
+
+.modal-content label {
+  color: var(--text-color-light);
+  font-size: 17px;
+  margin-bottom: 5px;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="date"],
+.modal-content textarea {
+  width: calc(100% - 20px); /* Adjust width for padding */
+  padding: 10px;
+  border: 1.5px solid var(--input-border);
+  border-radius: 10px;
+  font-size: 16px;
+  background: var(--card-bg);
+  color: var(--text-color-light);
+  transition: border 0.2s, background 0.3s, color 0.3s, box-shadow 0.2s;
+}
+
+.modal-content input[type="text"]:focus,
+.modal-content input[type="date"]:focus,
+.modal-content textarea:focus {
+  border-color: #007aff;
+  outline: none;
+  box-shadow: 0 0 0 3px var(--input-focus-shadow);
+}
+
+.modal-content textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  gap: 15px; /* Add gap between buttons */
+}
+
+.modal-actions button {
+  flex: 1; /* Make buttons take equal width */
+  border: none;
+  border-radius: 14px;
+  padding: 10px 15px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.modal-actions button:active {
+  transform: scale(0.96);
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: #fff;
+  box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-save:hover {
+  box-shadow: 0 12px 35px rgba(79, 172, 254, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-cancel {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: #fff;
+  box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-cancel:hover {
+  box-shadow: 0 12px 35px rgba(240, 147, 251, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-icon {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* Public Anniversaries Section */
+.public-anniversaries-section {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto 30px auto;
+  background: transparent;
+  border-radius: 24px;
+  box-shadow: none;
+  padding: 0 0 20px 0;
+  animation: fadeInUp 0.8s;
+}
+
+.public-anniversaries-section h2 {
+  text-align: left;
+  font-size: 22px;
+  color: #ff6f91;
+  margin: 24px 0 18px 18px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+#public-anniversaries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 0 10px;
+}
+
+.anniversary-item {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(168, 237, 234, 0.3), 0 4px 16px rgba(254, 214, 227, 0.2);
+  padding: 24px 26px 20px 26px;
+  animation: fadeInCard 0.7s cubic-bezier(.4,0,.2,1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.anniversary-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.8s;
+  pointer-events: none;
+}
+
+.anniversary-item:hover {
+  box-shadow: 0 15px 50px rgba(168, 237, 234, 0.4), 0 8px 25px rgba(254, 214, 227, 0.3);
+  background: linear-gradient(135deg, #b8f2ef 0%, #ffdde8 100%);
+  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(255,255,255,0.5);
+}
+
+.anniversary-item:hover::before {
+  left: 100%;
+}
+
+.anniversary-item h3 {
+  font-size: 20px;
+  color: #ff6f91;
+  margin: 0 0 8px 0;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.anniversary-item p {
+  font-size: 16px;
+  color: #555;
+  margin: 4px 0 0 0;
+  line-height: 1.7;
+}
+
+.anniversary-item p.description {
+  color: #ff6f91;
+  font-size: 15px;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.anniversary-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
+}
+
+.anniversary-actions button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.anniversary-actions button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+
+.anniversary-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.anniversary-actions button:hover::before {
+  left: 100%;
+}
+
+.anniversary-actions button:active {
+  transform: translateY(0) scale(0.96);
+}
+
+@keyframes fadeInCard {
+  from { opacity: 0; transform: translateY(30px) scale(0.98);}
+  to   { opacity: 1; transform: none;}
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 优化的响应式设计 */
+@media (max-width: 768px) {
+  .anniv-fancy {
+    margin: 20px 10px 30px 10px;
+    padding: 30px 20px 25px 20px;
+  }
+  
+  .anniv-days {
+    font-size: 64px;
+  }
+  
+  .add-btn-modern {
+    padding: 14px 28px;
+    font-size: 15px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    max-width: 420px;
+  }
+}
+
+@media (max-width: 500px) {
+  body {
+    font-size: 15px;
+  }
+  
+  header {
+    font-size: 16px;
+    padding: 12px 8px;
+  }
+  
+  main {
+    padding: 65px 5px 85px 5px;
+  }
+  
+  .anniv-fancy {
+    margin: 15px 5px 25px 5px;
+    padding: 25px 15px 20px 15px;
+    border-radius: 20px;
+  }
+  
+  .anniv-title {
+    font-size: 16px;
+  }
+  
+  .anniv-days {
+    font-size: 56px;
+    letter-spacing: 2px;
+  }
+  
+  .anniv-days-label {
+    font-size: 20px;
+  }
+  
+  .anniv-subtitle {
+    font-size: 13px;
+  }
+  
+  .add-btn-modern {
+    padding: 12px 24px;
+    font-size: 14px;
+    border-radius: 20px;
+  }
+  
+  .add-btn-icon {
+    font-size: 16px;
+  }
+  
+  .add-btn-plus {
+    font-size: 18px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    border-radius: 20px;
+  }
+  
+  .modal-header {
+    padding: 16px 20px;
+    border-radius: 20px 20px 0 0;
+  }
+  
+  .modal-header h2 {
+    font-size: 18px;
+  }
+  
+  .modal-content > *:not(.modal-header) {
+    margin: 0 20px;
+  }
+  
+  .modal-content > .modal-actions {
+    margin: 16px 20px 20px 20px;
+  }
+  
+  .modal-content label {
+    font-size: 15px;
+  }
+  
+  .modal-content input[type="text"],
+  .modal-content input[type="date"],
+  .modal-content textarea {
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 12px;
+  }
+  
+  .modal-actions {
+    gap: 12px;
+  }
+  
+  .modal-actions button {
+    padding: 12px 16px;
+    font-size: 15px;
+    border-radius: 12px;
+  }
+  
+  .public-anniversaries-section {
+    margin: 0 auto 20px auto;
+  }
+  
+  .public-anniversaries-section h2 {
+    font-size: 20px;
+    margin: 20px 0 15px 15px;
+  }
+  
+  #public-anniversaries-list {
+    padding: 0 5px;
+    gap: 16px;
+  }
+  
+  .anniversary-item {
+    padding: 18px 20px 16px 20px;
+    border-radius: 16px;
+  }
+  
+  .anniversary-item h3 {
+    font-size: 18px;
+  }
+  
+  .anniversary-item p {
+    font-size: 14px;
+  }
+  
+  .anniversary-item p.description {
+    font-size: 13px;
+  }
+  
+  .anniversary-actions {
+    margin-top: 12px;
+    gap: 10px;
+  }
+  
+  .anniversary-actions button {
+    padding: 8px 16px;
+    font-size: 13px;
+    border-radius: 12px;
+  }
+  
+  .date-type-selector {
+    gap: 12px;
+  }
+  
+  .lunar-date-inputs {
+    gap: 6px;
+  }
+  
+  .lunar-date-inputs select {
+    padding: 8px 10px;
+    font-size: 14px;
+    border-radius: 10px;
+    min-width: 65px;
+  }
+}
+
+/* 超小屏幕优化 */
+@media (max-width: 360px) {
+  .anniv-days {
+    font-size: 48px;
+  }
+  
+  .add-btn-modern {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+  
+  .anniversary-item {
+    padding: 15px 16px 14px 16px;
+  }
+  
+  .anniversary-item h3 {
+    font-size: 16px;
+  }
+  
+  .anniversary-actions button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+.anniv-fancy {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+  box-shadow: 0 20px 60px rgba(255, 154, 158, 0.3), 0 8px 30px rgba(254, 207, 239, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 28px;
+  padding: 40px 30px 35px 30px;
+  margin-bottom: 40px;
+  text-align: center;
+  position: relative;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.anniv-fancy::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: shimmer 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0%, 100% { transform: rotate(0deg) scale(1); opacity: 0.3; }
+  50% { transform: rotate(180deg) scale(1.1); opacity: 0.1; }
+}
+.anniv-days-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.anniv-days {
+  font-size: 72px;
+  font-weight: 900;
+  background: linear-gradient(45deg, #ff6b8a, #ff3b30, #ff9a56);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 3px;
+  line-height: 1;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: 0 4px 20px rgba(255, 59, 48, 0.3);
+  position: relative;
+  z-index: 2;
+}
+.anniv-heart {
+  font-size: 38px;
+  animation: heartBeat 1.2s infinite;
+  margin-bottom: 8px;
+}
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1);}
+  10%, 30% { transform: scale(1.18);}
+  20% { transform: scale(0.95);}
+  40% { transform: scale(1);}
+}
+.anniv-days-label {
+  font-size: 24px;
+  color: #ff6f91;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 8px rgba(255, 111, 145, 0.4);
+  position: relative;
+  z-index: 2;
+}
+
+.anniv-title {
+  font-size: 18px;
+  color: #ff6f91;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 8px rgba(255, 111, 145, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+.anniv-subtitle {
+  font-size: 14px;
+  color: #ff8fa3;
+  font-weight: 500;
+  margin-top: 15px;
+  opacity: 0.9;
+  font-style: italic;
+  position: relative;
+  z-index: 2;
+}
+.days-bounce {
+  animation: daysBounce 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+}
+@keyframes daysBounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3); }
+  50% { transform: scale(0.92);}
+  70% { transform: scale(1.1);}
+  100% { transform: scale(1);}
+}
+
+body.dark-theme .public-anniversaries-section h2 {
+  color: #ffbfa8;
+}
+
+body.dark-theme .anniversary-item {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 4px 16px rgba(44, 62, 80, 0.3);
+}
+
+body.dark-theme .anniversary-item:hover {
+  background: linear-gradient(135deg, #34495e 0%, #3b4a5c 100%);
+  box-shadow: 0 15px 50px rgba(0,0,0,0.5), 0 8px 25px rgba(52, 73, 94, 0.4);
+  border-color: rgba(255,255,255,0.2);
+}
+
+body.dark-theme .anniversary-item h3 {
+  color: #ffbfa8;
+}
+
+body.dark-theme .anniversary-item p {
+  color: #e0e0e0;
+}
+
+body.dark-theme .anniversary-item p.description {
+  color: #ffbfa8;
+}
+
+body.dark-theme .anniversary-actions button {
+  background: linear-gradient(135deg, #4a5c6a 0%, #556983 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(74, 92, 106, 0.4);
+}
+
+body.dark-theme .anniversary-actions button:hover {
+  box-shadow: 0 8px 25px rgba(74, 92, 106, 0.5);
+}
+
+body.dark-theme .anniv-fancy {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 8px 30px rgba(52, 73, 94, 0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+body.dark-theme .anniv-fancy::before {
+  background: radial-gradient(circle at 70% 30%, rgba(255,191,168,0.15) 0%, transparent 60%),
+              radial-gradient(circle at 20% 80%, rgba(255,111,145,0.1) 0%, transparent 70%);
+}
+
+body.dark-theme .anniv-fancy > * {
+  position: relative;
+  z-index: 2;
+}
+
+body.dark-theme .anniv-fancy .anniv-title,
+body.dark-theme .anniv-fancy .anniv-days-label,
+body.dark-theme .anniv-fancy div,
+body.dark-theme .anniv-fancy .anniv-subtitle {
+  color: #ffbfa8 !important;
+}
+
+body.dark-theme .anniv-fancy .anniv-days {
+  color: #ffbfa8 !important;
+  text-shadow: 0 2px 12px #222a;
+}
+
+body.dark-theme .anniv-fancy .anniv-heart {
+  text-shadow: 0 2px 12px #222a;
+}
+
+/* 农历日期选择器样式 */
+.date-type-selector {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.date-type-selector input[type="radio"] {
+  margin: 0 5px 0 0;
+  cursor: pointer;
+}
+
+.date-type-selector label {
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--text-color-light);
+  display: flex;
+  align-items: center;
+}
+
+.lunar-date-inputs {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.lunar-date-inputs select {
+  padding: 8px 10px;
+  border: 1.5px solid var(--input-border);
+  border-radius: 8px;
+  font-size: 14px;
+  background: var(--card-bg);
+  color: var(--text-color-light);
+  cursor: pointer;
+  transition: border 0.2s, background 0.3s, color 0.3s, box-shadow 0.2s;
+}
+
+.lunar-date-inputs select:focus {
+  border-color: #007aff;
+  outline: none;
+  box-shadow: 0 0 0 3px var(--input-focus-shadow);
+}
+
+.lunar-date-inputs label {
+  font-size: 14px;
+  color: var(--text-color-medium);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.lunar-date-inputs input[type="checkbox"] {
+  margin: 0;
+  cursor: pointer;
+}
+
+.lunar-preview {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--text-color-medium);
+}
+
+.lunar-preview .preview-content {
+  background-color: var(--item-bg);
+  border: 1px solid var(--item-border);
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 8px;
+}
+
+.lunar-preview .preview-content strong {
+  color: var(--text-color-light);
+}
+
+/* 纪念日展示样式优化 */
+.anniversary-item .date-info {
+  font-size: 15px;
+  color: #ff6f91;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.anniversary-item .days-info {
+  font-size: 16px;
+  color: #555;
+  font-weight: 600;
+}
+
+body.dark-theme .anniversary-item .date-info {
+  color: #ffbfa8;
+}
+
+body.dark-theme .anniversary-item .days-info {
+  color: #e0e0e0;
+}
+
+/* 响应式设计 */
+@media (max-width: 500px) {
+  .date-type-selector {
+    gap: 10px;
+    font-size: 14px;
+  }
+  
+  .lunar-date-inputs {
+    gap: 6px;
+  }
+  
+  .lunar-date-inputs select {
+    padding: 6px 8px;
+    font-size: 13px;
+    min-width: 60px;
+  }
+  
+  .lunar-date-inputs label {
+    font-size: 13px;
+  }
+  
+  .lunar-preview {
+    font-size: 13px;
+  }
+} 

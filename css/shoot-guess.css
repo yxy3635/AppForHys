@@ -1,0 +1,64 @@
+.shoot-container{max-width:1100px;margin:0 auto;padding:20px;font-family:Arial,sans-serif;color:var(--text-color,#333);
+  background: transparent; min-height:100vh;box-sizing:border-box}
+.shoot-header{display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:16px;
+  background: rgba(255,255,255,0.1);padding:14px;border-radius:14px;backdrop-filter:blur(10px)}
+.shoot-back{position:absolute;left:0;top:50%;transform:translateY(-50%);border:none;border-radius:50%;width:40px;height:40px;
+  background: rgba(255,255,255,0.25);cursor:pointer;color:#fff;font-size:18px;transition:.2s}
+.shoot-back:hover{transform:translateY(-50%) scale(1.05)}
+.shoot-status{position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fff;color:#333;padding:6px 12px;border-radius:20px;
+  font-weight:700;border:1px solid rgba(0,0,0,.08)}
+.shoot-actions{display:flex;gap:12px;justify-content:center;margin:14px 0}
+.shoot-btn{border:none;border-radius:24px;padding:10px 18px;background:#eef1ff;cursor:pointer;font-weight:700;color:#445;box-shadow:0 4px 10px rgba(0,0,0,.08);transition:.2s}
+.shoot-btn:hover{transform:translateY(-1px)}
+.shoot-btn.primary{background:linear-gradient(45deg,#667eea,#764ba2);color:#fff}
+.shoot-btn.danger{background:linear-gradient(45deg,#f56565,#e53e3e);color:#fff}
+.shoot-rooms{background: var(--card-bg,rgba(255,255,255,.95));border-radius:16px;box-shadow:0 14px 30px rgba(0,0,0,.2);padding:14px}
+.shoot-room-card{display:flex;justify-content:space-between;align-items:center;border:1px solid #eee;border-radius:12px;padding:12px 14px;margin:10px 0;background:#fafafa;transition:.2s}
+.shoot-room-card:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.12)}
+.shoot-game{background: var(--card-bg,rgba(255,255,255,.95));border-radius:16px;box-shadow:0 14px 30px rgba(0,0,0,.2);padding:16px}
+.shoot-info{display:flex;justify-content:center;align-items:center;gap:14px;margin-bottom:12px}
+.shoot-player{display:flex;gap:8px;align-items:center;background:#f0f3ff;border-radius:12px;padding:6px 12px}
+.shoot-player .name{font-weight:700}
+.shoot-player .score{font-weight:800;color:#667eea}
+.vs{font-weight:900;color:#fff;background:#667eea;padding:2px 10px;border-radius:999px}
+.shoot-round{margin:8px 0 12px;color:#fff;font-size:14px;text-align:center;background:rgba(0,0,0,.15);padding:6px 10px;border-radius:999px;display:inline-block}
+.shoot-timer{height:6px;background:rgba(0,0,0,.08);border-radius:999px;margin-top:6px;overflow:hidden}
+.shoot-timer-bar{height:100%;background:linear-gradient(90deg,#4f8cff,#00c6ff)}
+.shoot-panels{display:flex;gap:14px}
+.shoot-left{flex:1;display:flex;flex-direction:column}
+.shoot-right{width:380px}
+.shoot-panel{background:#f9fbff;border:1px solid #e8ecff;border-radius:12px;padding:12px;margin-bottom:12px}
+.shoot-setter-bar{background:#f9fbff;border:1px dashed #ccd7ff;border-radius:12px;padding:10px;margin-bottom:12px}
+.setter-inner{display:grid;grid-template-columns: 1fr 1fr auto;gap:8px;align-items:center}
+.setter-input{width:100%;min-width:0;box-sizing:border-box;border:1px solid #d8def8;border-radius:999px;padding:10px 14px;background:#fff}
+.setter-btn{white-space:nowrap;padding:10px 16px}
+@media (max-width: 520px){
+  .setter-inner{grid-template-columns: 1fr;}
+  .setter-btn{width:100%;}
+}
+.shoot-panel-title{font-weight:800;margin-bottom:8px;color:#445}
+.shoot-messages{height:370px;border:1px solid #e8ecff;border-radius:12px;padding:10px;overflow-y:auto;background:#fff}
+.shoot-message{margin:8px 0;padding:10px 12px;border-radius:10px;background:#f7f9ff;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.shoot-message.system{background:linear-gradient(45deg,#4ecdc4,#44a08d);color:#fff}
+.shoot-input{display:flex;gap:8px;margin-top:10px}
+.shoot-input input{flex:1;border:1px solid #d8def8;border-radius:999px;padding:10px 14px;background:#fff}
+.shoot-form{display:flex;gap:8px;align-items:center}
+.shoot-judge{display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width: 900px){.shoot-panels{flex-direction:column}.shoot-right{width:auto}}
+
+/* 暗黑主题适配（参考项目其他页面变量） */
+body.dark-theme .shoot-container{color:var(--text-color,#f2f2fa);background: transparent}
+body.dark-theme .shoot-header{background: rgba(35,36,42,.8); box-shadow:0 2px 12px rgba(0,0,0,.4)}
+body.dark-theme .shoot-back{background: rgba(79,140,255,.2); color:#7bb6ff}
+body.dark-theme .shoot-status{background:#2d3748;color:#e2e8f0;border-color:#444}
+body.dark-theme .shoot-btn{background:#2d3748;color:#e2e8f0;border:1px solid #3b4257}
+body.dark-theme .shoot-rooms,body.dark-theme .shoot-game{background: rgba(35,36,42,.95); color:#f2f2fa}
+body.dark-theme .shoot-room-card{background:#1f2430;border-color:#3b4257}
+body.dark-theme .shoot-player{background:#2d3748}
+body.dark-theme .shoot-panel{background:#2d3748;border-color:#4a5568}
+body.dark-theme .shoot-setter-bar{background:#2d3748;border-color:#4a5568}
+body.dark-theme .shoot-panel-title{color:#e2e8f0}
+body.dark-theme .shoot-messages{background:#1f2430;border-color:#3b4257}
+body.dark-theme .shoot-message{background:#273244;color:#e2e8f0}
+body.dark-theme .shoot-input input{background:#1f2430;border-color:#3b4257;color:#e2e8f0}
+

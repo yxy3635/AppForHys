@@ -1,0 +1,1267 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-color-light);
+  color: var(--text-color-light);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Dark theme variables and styles */
+body.dark-theme {
+  --bg-color-light: #282c34;
+  --bg-color-card: #3a404b;
+  --text-color-light: #e0e0e0;
+  --text-color-medium: #bbbbbb;
+  --border-color: #555;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --button-hover-bg: #4a4f58;
+  --modal-bg: #343a40;
+  --modal-shadow: rgba(0, 0, 0, 0.6);
+  --header-bg: rgba(26, 30, 36, 0.85); /* 深色模式半透明 */
+  --header-shadow: rgba(0,0,0,0.4);
+
+  background: linear-gradient(135deg, #181c24 0%, #23242a 100%) !important;
+  color: var(--text-color-light);
+}
+
+body.dark-theme::before {
+  content: '';
+  position: fixed !important;
+  left: 0 !important; top: 0 !important; right: 0 !important; bottom: 0 !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  display: block !important;
+  background:
+    radial-gradient(circle at 80% 20%, #ffbfa822 0%, transparent 60%),
+    radial-gradient(circle at 15% 70%, #ff6f9122 0%, transparent 70%),
+    radial-gradient(circle at 60% 80%, #fff2 0%, transparent 80%),
+    repeating-radial-gradient(circle at 50% 50%, #fff2 0 1px, transparent 1px 100px) !important;
+  opacity: 0.35 !important;
+}
+
+body:not(.dark-theme) {
+  --bg-color-light: #f6f8fa;
+  --bg-color-card: #fff;
+  --text-color-light: #333;
+  --text-color-medium: #666;
+  --border-color: #ddd;
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --button-hover-bg: #f0f0f0;
+  --modal-bg: #fefefe;
+  --modal-shadow: rgba(0, 0, 0, 0.2);
+  --header-bg: rgba(255, 255, 255, 0.85); /* 浅色模式半透明 */
+  --header-shadow: rgba(0,0,0,0.05);
+}
+
+header {
+  background: var(--header-bg);
+  backdrop-filter: blur(10px); /* 磨砂玻璃效果 */
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-color-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 12px;
+  font-size: 20px;
+  box-shadow: 0 4px 20px var(--header-shadow);
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 999;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.profile-title {
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.notification-test-corner {
+  font-size: 18px;
+  opacity: 0.6;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  background: transparent;
+  margin-left: auto;
+}
+
+.notification-test-corner:hover {
+  opacity: 1;
+  background: rgba(33, 150, 243, 0.1);
+  transform: scale(1.1);
+}
+
+.notification-test-corner:active {
+  transform: scale(0.95);
+}
+
+#back-btn {
+  background: #fff;
+  color: #007aff;
+  border: none;
+  border-radius: 18px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+main {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 70px 10px 150px 10px; /* 进一步增加底部padding到150px */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Profile Card */
+.profile-card {
+  background: var(--bg-color-card);
+  border-radius: 20px;
+  box-shadow: 0 6px 20px var(--shadow-color);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.profile-avatar-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+#avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #007aff;
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2), 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+  cursor: pointer;
+}
+
+#avatar:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.4), 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.edit-avatar-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #007aff;
+  color: #fff;
+  border: 2px solid var(--bg-color-card);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, border-color 0.3s, transform 0.1s;
+}
+
+.edit-avatar-btn:active {
+  transform: scale(0.9);
+}
+
+.profile-details {
+  text-align: center;
+  width: 100%;
+}
+
+#display-username,
+#display-signature {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text-color-light);
+  margin-bottom: 10px;
+  transition: color 0.3s;
+}
+
+#display-signature {
+  font-size: 16px;
+  font-weight: normal;
+  color: var(--text-color-medium);
+  margin-top: -5px;
+  margin-bottom: 20px;
+}
+
+.edit-field {
+  width: calc(100% - 24px); /* Account for padding */
+  padding: 10px 12px;
+  margin-bottom: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-sizing: border-box;
+  font-size: 17px;
+  background: var(--bg-color-card);
+  color: var(--text-color-light);
+  transition: border-color 0.3s, background-color 0.3s, box-shadow 0.2s;
+}
+
+.edit-field:focus {
+  border-color: #007aff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+}
+
+.edit-field.hide {
+  display: none;
+}
+
+.edit-field.animate-fadein {
+  animation: fadeInDown 0.5s;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.profile-actions button {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  transition: transform 0.1s, background-color 0.3s;
+}
+
+#edit-profile-btn {
+  background: linear-gradient(90deg, #007aff, #00c6ff);
+  color: #fff;
+}
+
+#edit-profile-btn:hover {
+  filter: brightness(1.1);
+}
+
+#edit-profile-btn:active,
+#save-profile-btn:active,
+#cancel-edit-btn:active {
+  transform: scale(0.96);
+}
+
+#save-profile-btn {
+  background: linear-gradient(90deg, #28a745, #218838);
+  color: #fff;
+}
+
+#save-profile-btn:hover {
+  filter: brightness(1.1);
+}
+
+#cancel-edit-btn {
+  background: var(--button-hover-bg);
+  color: var(--text-color-light);
+  border: 1px solid var(--border-color);
+}
+
+#cancel-edit-btn:hover {
+  background: var(--border-color);
+}
+
+/* Settings Section */
+.settings-section {
+  background: var(--bg-color-card);
+  border-radius: 20px;
+  box-shadow: 0 6px 20px var(--shadow-color);
+  padding: 25px 20px 35px 20px; /* 增加底部padding */
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 40px; /* 增加底部margin */
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.settings-section h2 {
+  text-align: center;
+  color: #007aff;
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 22px;
+  border-bottom: 2px solid rgba(0, 122, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.setting-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 10px; /* 为最后一个设置项添加底部padding */
+}
+
+.setting-item span {
+  font-size: 18px;
+  color: var(--text-color-light);
+}
+
+/* Theme Switch */
+.theme-switch {
+  position: relative;
+  width: 60px;
+  height: 34px;
+}
+
+.theme-switch .checkbox {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-label {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.toggle-label:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.checkbox:checked + .toggle-label {
+  background-color: #007aff;
+}
+
+.checkbox:focus + .toggle-label {
+  box-shadow: 0 0 1px #007aff;
+}
+
+.checkbox:checked + .toggle-label:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Hide class */
+.hide {
+  display: none !important;
+}
+
+/* Media Queries */
+@media (max-width: 500px) {
+  body { font-size: 16px; }
+  header { font-size: 17px; padding: 10px 6px; }
+  #back-btn { font-size: 15px; padding: 7px 10px; }
+  main { 
+    padding: 70px 5px 130px 5px; /* 调整移动端的底部padding */
+  }
+  .profile-card, .settings-section {
+    padding: 20px 15px;
+  }
+  .profile-avatar-container {
+    width: 100px;
+    height: 100px;
+  }
+  .edit-avatar-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+  #display-username, #edit-username {
+    font-size: 20px;
+  }
+  #display-signature, #edit-signature {
+    font-size: 14px;
+  }
+  .edit-field {
+    font-size: 15px;
+  }
+  .profile-actions button {
+    padding: 8px 18px;
+    font-size: 14px;
+  }
+  .settings-section h2 {
+    font-size: 20px;
+  }
+  .setting-item span {
+    font-size: 16px;
+  }
+  .theme-switch {
+    width: 50px;
+    height: 28px;
+  }
+  .toggle-label:before {
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+  }
+  .checkbox:checked + .toggle-label:before {
+    transform: translateX(22px);
+  }
+  .settings-section {
+    padding: 20px 15px 30px 15px; /* 调整移动端的padding */
+    margin-bottom: 35px; /* 调整移动端的margin */
+  }
+}
+
+.logout-button {
+  margin-top: 20px !important; /* 增加顶部间距 */
+  margin-bottom: 10px !important; /* 增加底部间距 */
+  background: #ff3b30 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 12px 20px !important;
+  font-size: 17px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  width: 100% !important;
+  opacity: 0.9 !important;
+}
+
+.logout-button:active {
+  transform: scale(0.96);
+}
+
+.logout-button:hover {
+  background: #c82333;
+}
+
+/* Ensure the full-width-button class also applies some basic spacing if needed */
+.full-width-button {
+  margin-top: 10px; /* Add some spacing above the button */
+}
+
+/* 编辑资料模式下的卡片背景和分区 */
+.profile-card.edit-mode {
+  background: var(--bg-color-card);
+  box-shadow: 0 8px 32px var(--shadow-color);
+  border: 2px solid #007aff;
+  padding: 32px 18px 24px 18px;
+  position: relative;
+  transition: border-color 0.3s;
+}
+
+.profile-card.edit-mode::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 8px;
+  background: linear-gradient(90deg, #007aff 0%, #00c6ff 100%);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+/* 编辑资料输入区美化 */
+.profile-card.edit-mode .edit-field {
+  background: #f8fafc;
+  border: 1.2px solid #e3eaf2;
+  border-radius: 16px;
+  box-shadow: none;
+  font-size: 17px;
+  color: #222;
+  margin-bottom: 18px;
+  padding: 12px 16px;
+  transition: border-color 0.2s, background 0.2s;
+  outline: none;
+  resize: none;
+}
+
+.profile-card.edit-mode .edit-field:focus {
+  border-color: #007aff;
+  background: #f0f7ff;
+}
+
+.profile-card.edit-mode label.edit-field,
+.profile-card.edit-mode .edit-field + label,
+.profile-card.edit-mode label[for^="edit-"] {
+  display: block;
+  font-size: 13px;
+  color: #8a99a8;
+  margin-bottom: 4px;
+  margin-top: 0;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+/* 让label和输入框之间距离更自然 */
+.profile-card.edit-mode label.edit-field {
+  margin-bottom: 4px;
+  margin-top: 0;
+}
+
+/* 让输入区更有分组感 */
+.profile-card.edit-mode .edit-field:not(:last-child) {
+  margin-bottom: 18px;
+}
+
+/* 让textarea高度更合适 */
+.profile-card.edit-mode textarea.edit-field {
+  min-height: 60px;
+  max-height: 120px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+/* 移动端优化 */
+@media (max-width: 500px) {
+  .profile-card.edit-mode {
+    padding: 18px 4px 16px 4px;
+  }
+  .profile-actions {
+    gap: 8px;
+  }
+  #save-profile-btn, #cancel-edit-btn {
+    padding: 8px 10px;
+    font-size: 15px;
+  }
+  .profile-card.edit-mode .edit-field {
+    font-size: 15px;
+    padding: 10px 10px;
+    border-radius: 10px;
+  }
+  .profile-card.edit-mode label.edit-field {
+    font-size: 12px;
+  }
+}
+
+/* 检测新版本按钮美化 */
+#check-update-btn {
+  background: linear-gradient(90deg, #007aff 60%, #6dd5fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 12px 0;
+  font-size: 18px;
+  font-weight: bold;
+  width: 100%;
+  margin: 12px 0 0 0;
+  box-shadow: 0 2px 12px rgba(0,122,255,0.10);
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+#check-update-btn:hover {
+  background: linear-gradient(90deg, #005ecb 60%, #6dd5fa 100%);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 24px rgba(0,122,255,0.18);
+}
+
+@media (max-width: 500px) {
+  #check-update-btn {
+    font-size: 16px;
+    padding: 10px 0;
+    border-radius: 14px;
+  }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-30px);}
+  to   { opacity: 1; transform: none;}
+}
+.profile-main, .profile-content, .profile-card {
+  animation: fadeInDown 0.7s;
+}
+
+@keyframes bounceRotateIn {
+  0% { opacity: 0; transform: scale(0.7) rotate(-30deg) translateY(80px);}
+  50% { opacity: 1; transform: scale(1.08) rotate(10deg) translateY(-10px);}
+  70% { transform: scale(0.96) rotate(-5deg) translateY(6px);}
+  100% { opacity: 1; transform: scale(1) rotate(0) translateY(0);}
+}
+.page-bounce-rotate-in {
+  animation: bounceRotateIn 0.9s cubic-bezier(.23,1.02,.53,.97);
+}
+
+@keyframes wobbleIn {
+  0% { opacity: 0; transform: translateX(-80px) rotate(-6deg) scale(0.96);}
+  30% { opacity: 1; transform: translateX(12px) rotate(4deg) scale(1.03);}
+  50% { transform: translateX(-8px) rotate(-2deg) scale(0.99);}
+  70% { transform: translateX(4px) rotate(1deg) scale(1.01);}
+  100% { opacity: 1; transform: translateX(0) rotate(0) scale(1);}
+}
+.page-wobble-in {
+  animation: wobbleIn 1.05s cubic-bezier(.68,-0.55,.27,1.55);
+}
+
+@keyframes elasticFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  80% {
+    transform: scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.page-elastic-fade-in {
+  animation: elasticFadeIn 0.95s cubic-bezier(.68,-0.55,.27,1.55);
+}
+
+#update-progress-bar {
+  width: 100%;
+  background: #e6f0ff;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  height: 12px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+#update-progress-inner {
+  height: 12px;
+  background: #4f8cff;
+  border-radius: 6px;
+  transition: width 0.2s;
+}
+#update-progress-text {
+  position: absolute;
+  right: 12px;
+  top: 0;
+  font-size: 13px;
+  color: #4f8cff;
+}
+
+/* ===== 服务器状态样式 ===== */
+
+/* 服务器状态按钮 */
+.server-status-button {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
+  width: 100%;
+  margin: 8px 0;
+  letter-spacing: 0.02em;
+  position: relative;
+  overflow: hidden;
+}
+
+.server-status-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.server-status-button:hover {
+  background: linear-gradient(135deg, #138496 0%, #117a8b 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(23, 162, 184, 0.4);
+}
+
+.server-status-button:hover::before {
+  left: 100%;
+}
+
+.server-status-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(23, 162, 184, 0.3);
+}
+
+/* 关于按钮：与服务器状态按钮统一风格，仅换配色 */
+.about-button {
+  background: linear-gradient(135deg, #4f8cff 0%, #00c6ff 100%) !important;
+  box-shadow: 0 4px 15px rgba(79, 140, 255, 0.3) !important;
+}
+.about-button:hover {
+  background: linear-gradient(135deg, #3e78f0 0%, #00b6ff 100%) !important;
+  box-shadow: 0 6px 20px rgba(79, 140, 255, 0.4) !important;
+}
+.about-button:active {
+  box-shadow: 0 2px 10px rgba(79, 140, 255, 0.3) !important;
+}
+
+/* 服务器状态模态框 */
+#server-status-modal {
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* 关于模态框：复用服务器状态样式但配色为蓝色系 */
+#about-modal {
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0; width: 100%; height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  align-items: center; justify-content: center;
+  padding: 20px; box-sizing: border-box;
+}
+#about-modal .modal-content {
+  max-width: 500px; width: 90%; max-height: 75vh;
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  display: flex; flex-direction: column; position: relative;
+  background: var(--bg-color-card);
+}
+#about-modal .modal-header {
+  background: linear-gradient(135deg, #4f8cff 0%, #00c6ff 100%);
+  color: white; padding: 20px 25px; border-bottom: none;
+}
+#about-modal .modal-header h3 { margin: 0; font-size: 20px; font-weight: 600; }
+#about-modal .close { color: white; font-size: 28px; font-weight: bold; opacity: 0.8; transition: opacity 0.3s; }
+#about-modal .close:hover { opacity: 1; }
+#about-modal .modal-body { padding: 0; flex: 1; overflow-y: auto; min-height: 0; max-height: calc(75vh - 120px); }
+#about-modal .modal-footer { padding: 15px 25px; border-top: 1px solid var(--border-color); background: var(--bg-color-card); display:flex; justify-content:flex-end; }
+#about-modal .modal-footer button { padding: 10px 20px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; min-width: 80px; background: linear-gradient(135deg, #4f8cff 0%, #00c6ff 100%); color:#fff; }
+
+/* 暗色主题适配 - 关于 */
+body.dark-theme .about-button {
+  background: linear-gradient(135deg, #6aa6ff 0%, #1ecbff 100%) !important;
+  box-shadow: 0 4px 15px rgba(106, 166, 255, 0.25) !important;
+}
+body.dark-theme #about-modal .modal-header { background: linear-gradient(135deg, #6aa6ff 0%, #1ecbff 100%); }
+
+#server-status-modal .modal-content {
+  max-width: 500px;
+  width: 90%;
+  max-height: 75vh;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: var(--bg-color-card);
+}
+
+#server-status-modal .modal-header {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+  padding: 20px 25px;
+  border-bottom: none;
+}
+
+#server-status-modal .modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#server-status-modal .modal-header h3::before {
+  content: '🖥️';
+  font-size: 24px;
+}
+
+#server-status-modal .close {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+#server-status-modal .close:hover {
+  opacity: 1;
+}
+
+/* 服务器状态内容区域 */
+#server-status-content {
+  padding: 0;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  max-height: calc(75vh - 140px);
+}
+
+/* 加载状态 */
+.server-status-loading {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-color-medium);
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #17a2b8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.server-status-loading p {
+  font-size: 16px;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* 服务器状态信息 */
+.server-status-info {
+  padding: 20px 25px;
+}
+
+.server-status-info .status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s;
+}
+
+.server-status-info .status-item:hover {
+  background-color: rgba(23, 162, 184, 0.05);
+  margin: 0 -25px;
+  padding: 12px 25px;
+}
+
+.server-status-info .status-item:last-child {
+  border-bottom: none;
+}
+
+.server-status-info .status-label {
+  font-weight: 600;
+  color: var(--text-color-light);
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.server-status-info .status-value {
+  font-weight: 600;
+  color: var(--text-color-medium);
+  font-size: 14px;
+  text-align: right;
+  min-width: 180px;
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* 进度条样式 */
+.progress-bar {
+  position: relative;
+  width: 150px;
+  height: 20px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #17a2b8, #20c997);
+  border-radius: 10px;
+  transition: width 0.8s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  font-weight: 600;
+  color: #333;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+  white-space: nowrap;
+}
+
+/* 高使用率警告 */
+.progress-fill.high-usage {
+  background: linear-gradient(90deg, #ffc107, #fd7e14);
+}
+
+.progress-fill.critical-usage {
+  background: linear-gradient(90deg, #dc3545, #e74c3c);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* 磁盘详情样式 */
+.disk-details {
+  margin-top: -5px !important;
+  padding-top: 5px !important;
+  border-top: none !important;
+}
+
+.disk-details .status-label {
+  display: none;
+}
+
+.disk-info {
+  font-size: 12px !important;
+  color: #666 !important;
+  font-weight: normal !important;
+  text-align: center !important;
+  min-width: auto !important;
+  justify-content: center !important;
+}
+
+/* 状态指示器 */
+.status-online {
+  color: #28a745 !important;
+  font-weight: 700 !important;
+}
+
+.status-offline {
+  color: #dc3545 !important;
+  font-weight: 700 !important;
+}
+
+.status-warning {
+  color: #ffc107 !important;
+  font-weight: 700 !important;
+}
+
+/* 错误状态 */
+.server-status-error {
+  text-align: center;
+  padding: 30px 20px;
+  color: #dc3545;
+}
+
+.server-status-error p {
+  margin: 10px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.server-status-error ul {
+  text-align: left;
+  margin: 15px 0;
+  padding-left: 20px;
+}
+
+.server-status-error li {
+  margin: 5px 0;
+  color: #666;
+}
+
+/* 模态框底部按钮 */
+#server-status-modal .modal-footer {
+  padding: 15px 25px;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-color-card);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+#server-status-modal .modal-footer button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 80px;
+}
+
+#server-status-modal .modal-footer button:first-child {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(23, 162, 184, 0.3);
+}
+
+#server-status-modal .modal-footer button:first-child:hover {
+  background: linear-gradient(135deg, #138496 0%, #117a8b 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(23, 162, 184, 0.4);
+}
+
+#server-status-modal .modal-footer button:last-child {
+  background: #6c757d;
+  color: white;
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+}
+
+#server-status-modal .modal-footer button:last-child:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
+}
+
+/* 暗色主题适配 */
+body.dark-theme .server-status-button {
+  background: linear-gradient(135deg, #20c997 0%, #1ea085 100%);
+  box-shadow: 0 4px 15px rgba(32, 201, 151, 0.3);
+}
+
+body.dark-theme .server-status-button:hover {
+  background: linear-gradient(135deg, #1ea085 0%, #1a7f6b 100%);
+  box-shadow: 0 6px 20px rgba(32, 201, 151, 0.4);
+}
+
+body.dark-theme #server-status-modal .modal-header {
+  background: linear-gradient(135deg, #20c997 0%, #1ea085 100%);
+}
+
+body.dark-theme .loading-spinner {
+  border-color: #3a404b;
+  border-top-color: #20c997;
+}
+
+body.dark-theme .server-status-info .status-item:hover {
+  background-color: rgba(32, 201, 151, 0.1);
+}
+
+body.dark-theme .status-online {
+  color: #20c997 !important;
+}
+
+body.dark-theme .status-offline {
+  color: #e74c3c !important;
+}
+
+body.dark-theme .status-warning {
+  color: #f39c12 !important;
+}
+
+body.dark-theme #server-status-modal .modal-footer button:first-child {
+  background: linear-gradient(135deg, #20c997 0%, #1ea085 100%);
+  box-shadow: 0 2px 8px rgba(32, 201, 151, 0.3);
+}
+
+body.dark-theme #server-status-modal .modal-footer button:first-child:hover {
+  background: linear-gradient(135deg, #1ea085 0%, #1a7f6b 100%);
+  box-shadow: 0 4px 12px rgba(32, 201, 151, 0.4);
+}
+
+/* 暗色主题进度条 */
+body.dark-theme .progress-bar {
+  background: #3a404b;
+}
+
+body.dark-theme .progress-text {
+  color: #e0e0e0;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+body.dark-theme .disk-info {
+  color: #aaa !important;
+}
+
+/* 移动端优化 */
+@media (max-width: 500px) {
+  .server-status-button {
+    font-size: 15px;
+    padding: 12px 16px;
+    border-radius: 14px;
+  }
+  
+  #server-status-modal {
+    padding: 10px;
+  }
+  
+  #server-status-modal .modal-content {
+    width: 95%;
+    margin: 0 auto;
+    max-height: 80vh;
+  }
+  
+  #server-status-modal .modal-header {
+    padding: 18px 20px;
+  }
+  
+  #server-status-modal .modal-header h3 {
+    font-size: 18px;
+  }
+  
+  .server-status-info {
+    padding: 15px 20px;
+  }
+  
+  .server-status-info .status-item {
+    padding: 10px 0;
+  }
+  
+  .server-status-info .status-item:hover {
+    margin: 0 -20px;
+    padding: 10px 20px;
+  }
+  
+  .server-status-info .status-label {
+    font-size: 14px;
+  }
+  
+  .server-status-info .status-value {
+    font-size: 13px;
+  }
+  
+  /* 移动端进度条优化 */
+  .progress-bar {
+    width: 120px;
+    height: 18px;
+    margin-left: 5px;
+  }
+  
+  .progress-text {
+    font-size: 10px;
+  }
+  
+  .server-status-loading,
+  .server-status-error {
+    padding: 15px 15px;
+  }
+  
+  #server-status-content {
+    max-height: calc(80vh - 120px);
+  }
+  
+  #server-status-modal .modal-footer {
+    padding: 15px 20px;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+  
+  #server-status-modal .modal-footer button {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
+
+/* 动画效果 */
+@keyframes serverStatusFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.server-status-info {
+  animation: serverStatusFadeIn 0.4s ease-out;
+}
+
+.server-status-info .status-item {
+  animation: serverStatusFadeIn 0.4s ease-out;
+  animation-fill-mode: both;
+}
+
+.server-status-info .status-item:nth-child(1) { animation-delay: 0.1s; }
+.server-status-info .status-item:nth-child(2) { animation-delay: 0.15s; }
+.server-status-info .status-item:nth-child(3) { animation-delay: 0.2s; }
+.server-status-info .status-item:nth-child(4) { animation-delay: 0.25s; }
+.server-status-info .status-item:nth-child(5) { animation-delay: 0.3s; }
+.server-status-info .status-item:nth-child(6) { animation-delay: 0.35s; }
+.server-status-info .status-item:nth-child(7) { animation-delay: 0.4s; }

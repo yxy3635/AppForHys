@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>射履对战</title>
+  <link rel="stylesheet" href="css/shoot-guess.css">
+  <link rel="stylesheet" href="css/gomoku.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <script src="js/config.js"></script>
+  <script src="js/theme.js"></script>
+</head>
+<body>
+  <div class="shoot-container">
+    <header class="gomoku-header">
+      <button class="gomoku-back" onclick="window.location.href='shoot-guess.html'">←</button>
+      <span class="gomoku-title">射履</span>
+    </header>
+    <div id="shootGame" class="shoot-game" style="display:block;">
+      <div class="shoot-info">
+        <div class="shoot-player" id="shootP1"><span class="name">P1</span><span class="score">0</span></div>
+        <div class="vs">VS</div>
+        <div class="shoot-player" id="shootP2"><span class="name">P2</span><span class="score">0</span></div>
+      </div>
+      <div class="shoot-round">
+        <div>回合 <span id="shootRound">1</span>/5 · 类别 <span id="shootCategory">—</span> · 剩余机会 <span id="shootChances">15</span> · 倒计时 <span id="shootTimer">60</span>s</div>
+        <div class="shoot-timer"><div id="shootProgress" class="shoot-timer-bar" style="width:100%"></div></div>
+      </div>
+      <div class="shoot-panels">
+        <div class="shoot-left">
+          <div class="shoot-panel-title">历史对话</div>
+          <div id="shootMessages" class="shoot-messages"></div>
+          <div id="askArea" class="shoot-input">
+            <input id="shootQuestionInput" type="text" placeholder="履者提问或直接输入答案进行猜测..." maxlength="60">
+            <button id="shootSendQuestionBtn" class="shoot-btn primary">发送</button>
+          </div>
+        </div>
+        <div class="shoot-right">
+          <div id="setterArea" class="shoot-setter-bar">
+            <div class="setter-inner">
+              <input id="shootCategoryInput" class="setter-input" type="text" placeholder="输入类别（自定义）" maxlength="10">
+              <input id="shootWordInput" class="setter-input" type="text" placeholder="输入谜底" maxlength="12">
+              <button id="shootStartRoundBtn" class="shoot-btn primary setter-btn">开始！</button>
+            </div>
+          </div>
+          <div id="judgeArea" class="shoot-panel" style="display:none;">
+            <div class="shoot-panel-title">回答</div>
+            <div class="shoot-judge">
+              <button class="shoot-btn" data-judge="是">是</button>
+              <button class="shoot-btn" data-judge="否">否</button>
+              <button class="shoot-btn" data-judge="接近了">接近了</button>
+              <button class="shoot-btn" data-judge="差远了">差远了</button>
+              <button class="shoot-btn danger" data-judge="答案正确">答案正确</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="shoot-controls">
+        <button id="shootEndBtn" class="shoot-btn danger">结束比赛</button>
+      </div>
+    </div>
+  </div>
+  <script src="js/pages/shoot-guess.js"></script>
+</body>
+</html>
+
+

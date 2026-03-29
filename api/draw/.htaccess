@@ -1,0 +1,22 @@
+# 强化CORS设置 - Apache服务器级别
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+Header always set Access-Control-Allow-Credentials "false"
+Header always set Access-Control-Max-Age "86400"
+
+# 处理OPTIONS预检请求
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+
+# 确保PHP文件能够正确执行
+<Files "*.php">
+    SetHandler application/x-httpd-php
+</Files>
+
+# 防止直接访问.htaccess文件
+<Files ".htaccess">
+    Order Allow,Deny
+    Deny from all
+</Files>

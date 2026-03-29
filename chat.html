@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>私聊</title>
+  <link rel="stylesheet" href="css/chat.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <script src="js/config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/notification-native.js"></script>
+  <script src="js/global-notification.js"></script>
+</head>
+<body>
+  <header class="home-header chat-header">
+    <button id="back-btn" onclick="history.back()"></button>
+    <img id="chat-peer-avatar" class="chat-peer-avatar" src="img/default-avatar.png" alt="头像">
+    <span id="chat-peer-username">私聊</span>
+  </header>
+  <main id="chat-list" class="chat-list-main">
+    <!-- 聊天消息列表 -->
+  </main>
+  
+  <!-- 长按菜单 -->
+  <div id="long-press-menu" class="long-press-menu" style="display: none;">
+    <div class="menu-item" id="copy-message">复制</div>
+    <div class="menu-item" id="recall-message">撤回</div>
+  </div>
+  
+  <div id="emoji-panel">
+    <div class="emoji-grid"></div>
+  </div>
+  <footer>
+    <div id="image-preview-area" class="hide"></div>
+    <div class="input-area">
+      <button id="emoji-btn" onclick="event.stopPropagation(); toggleEmojiPanel()">😀</button>
+      <button id="gif-btn" onclick="event.stopPropagation(); toggleGifPanel()">GIF</button>
+      <input type="text" id="chat-input" placeholder="输入消息...">
+      <button id="send-btn" onclick="sendMsg()">发送</button>
+    </div>
+  </footer>
+  <div id="gif-panel" style="display:none;">
+    <input type="text" id="gif-search" placeholder="搜索GIF" style="width:90%;margin:8px auto;display:block;">
+    
+    <!-- 上传表情包区域 -->
+    <div class="upload-emoji-area">
+      <div class="upload-form">
+        <input type="text" id="emoji-name-input" placeholder="给表情起个名字吧~" maxlength="20">
+        <label for="emoji-upload" class="upload-emoji-btn">
+          📤 选择表情文件
+        </label>
+        <input type="file" id="emoji-upload" accept="image/*" style="display: none;">
+      </div>
+      <div class="upload-tip">宝宝可以上传自己喜欢的表情包噢~</div>
+    </div>
+    
+    <div class="gif-grid"></div>
+  </div>
+  <script src="js/modal.js"></script>
+  <script src="js/pages/chat.js"></script>
+  <script src="js/pages/nav-unread.js"></script>
+  <script>
+    document.addEventListener('plusready', function(){
+      plus.key.addEventListener('backbutton', function(){
+        history.back();
+      }, false);
+    });
+    function goInteraction() { window.location.href = 'interaction.html'; }
+    function goAnniversary() { window.location.href = 'anniversary.html'; }
+    function goProfile() { window.location.href = 'profile.html'; }
+    // 检查未读消息感叹号
+    document.addEventListener('DOMContentLoaded', function() {
+      var currentUserId = localStorage.getItem('user_id');
+      updateInteractionExclaimOnce(currentUserId);
+    });
+  </script>
+</body>
+</html> 

@@ -1,0 +1,355 @@
+/* css/modal.css */
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6) !important; /* 更深的背景，强制应用 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999 !important; /* 确保在最顶层 */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  backdrop-filter: blur(4px); /* 稍微强一点的模糊 */
+  -webkit-backdrop-filter: blur(4px); /* For Safari */
+}
+
+.custom-modal-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.custom-modal-content {
+  background: #ffffff !important; /* 强制白色背景 */
+  color: #333333 !important; /* 强制深色文本 */
+  padding: 30px 25px;
+  border-radius: 20px; /* Softer rounded corners */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* More subtle and diffused shadow */
+  text-align: center;
+  max-width: 400px; /* Slightly wider */
+  width: 90%;
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  /* Bouncy effect on appearance */
+}
+
+.custom-modal-overlay.show .custom-modal-content {
+  transform: scale(1);
+}
+
+.custom-modal-content h3 {
+  margin-top: 0;
+  font-size: 24px; /* Slightly larger title */
+  color: #007aff;
+  margin-bottom: 15px;
+  font-weight: 600; /* Bolder title */
+}
+
+.custom-modal-content p {
+  font-size: 16px; /* Slightly smaller, more natural text size */
+  margin-bottom: 25px;
+  line-height: 1.6; /* Improved readability */
+  color: var(--text-color-medium); /* Use medium text color for body */
+}
+
+.custom-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Space between buttons */
+}
+
+.custom-modal-content button {
+  border: none;
+  border-radius: 25px; /* Consistent with previous */
+  padding: 12px 25px;
+  font-size: 17px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Lighter shadow for buttons */
+  transition: transform 0.2s, background 0.3s, filter 0.3s;
+  font-weight: 500;
+}
+
+.custom-modal-content button#custom-modal-confirm-btn {
+  background: linear-gradient(90deg, #007aff, #00c6ff);
+  color: #fff;
+}
+
+.custom-modal-content button#custom-modal-confirm-btn:hover {
+  filter: brightness(1.1);
+}
+
+.custom-modal-content button#custom-modal-cancel-btn {
+  background: var(--button-hover-bg);
+  color: var(--text-color-light);
+  border: 1px solid var(--border-color);
+}
+
+.custom-modal-content button#custom-modal-cancel-btn:hover {
+  background: var(--border-color); /* Darker on hover for cancel */
+}
+
+.custom-modal-content button:active {
+  transform: scale(0.97);
+}
+
+/* 位置共享模态框样式 */
+.permission-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.permission-content {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: modalSlideIn 0.3s ease-out;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.permission-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.permission-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.permission-text {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.permission-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.permission-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-allow {
+  background: #4CAF50;
+  color: white;
+}
+
+.btn-allow:hover {
+  background: #45a049;
+  transform: translateY(-1px);
+}
+
+.btn-deny {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.btn-deny:hover {
+  background: #e0e0e0;
+  transform: translateY(-1px);
+}
+
+/* 用户列表样式 */
+.user-list {
+  max-height: 300px;
+  overflow-y: auto;
+  margin: 15px 0;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+
+.user-item:hover {
+  background-color: #f5f5f5;
+}
+
+.user-item:last-child {
+  border-bottom: none;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.user-status {
+  font-size: 12px;
+  color: #666;
+}
+
+.loading-text, .error-text {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+.error-text {
+  color: #f44336;
+}
+
+/* 历史记录样式 */
+.history-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 12px;
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-time {
+  color: #666;
+  font-weight: 500;
+}
+
+.history-location {
+  color: #333;
+  font-family: monospace;
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 450px) {
+  .custom-modal-content {
+    padding: 25px 20px;
+  }
+  .custom-modal-content h3 {
+    font-size: 22px;
+  }
+  .custom-modal-content p {
+    font-size: 15px;
+  }
+  .custom-modal-content button {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  .custom-modal-actions {
+    gap: 10px;
+  }
+  
+  .permission-content {
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  .permission-buttons {
+    flex-direction: column;
+  }
+}
+
+/* Custom modal input (textarea) styles */
+.custom-modal-input {
+  width: calc(100% - 20px); /* Adjust width to fit padding */
+  padding: 10px;
+  margin: 15px auto; /* Centering and spacing */
+  border: 1px solid #ddd; /* Light border */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 16px;
+  min-height: 80px; /* Minimum height for textarea */
+  resize: vertical; /* Allow vertical resizing */
+  box-sizing: border-box; /* Include padding and border in width/height */
+  outline: none; /* Remove default focus outline */
+  transition: border-color 0.3s;
+  display: block; /* Ensure it's a block element */
+}
+
+.custom-modal-input:focus {
+  border-color: #007aff; /* Highlight on focus */
+}
+
+/* Hide helper */
+.hide {
+  display: none !important; /* Force hide */
+}
+
+/* Dark theme for modal input */
+body.dark-theme .custom-modal-input {
+  background: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+body.dark-theme .custom-modal-input:focus {
+  border-color: #007aff;
+} 

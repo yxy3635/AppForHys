@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>聊天</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <script src="js/config.js"></script>
+  <script src="js/notification-native.js"></script>
+  <script src="js/global-notification.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/snow.js"></script>
+  <script src="js/snow-init.js"></script>
+</head>
+<body>
+  <header class="home-header">
+    <button id="back-btn" onclick="history.back()"></button>
+    <span class="header-main" style="font-size: 20px; flex: 1; text-align: center;">聊天</span>
+  </header>
+  <!-- 顶部波浪装饰 -->
+  <div class="userlist-wave-top">
+    <svg viewBox="0 0 500 60" preserveAspectRatio="none" style="width:100%;height:60px;display:block;">
+      <path d="M0,30 Q125,60 250,30 T500,30 V60 H0 Z" fill="#e6f0ff" opacity="0.85">
+        <animate attributeName="d" dur="4s" repeatCount="indefinite"
+          values="M0,30 Q125,60 250,30 T500,30 V60 H0 Z;
+                  M0,35 Q125,20 250,35 T500,30 V60 H0 Z;
+                  M0,30 Q125,60 250,30 T500,30 V60 H0 Z" />
+      </path>
+    </svg>
+  </div>
+  <main class="userlist-main">
+    <div class="userlist-title" style="margin-top: -60px;">用户列表</div>
+    <div class="userlist-list" id="user-list"></div>
+    <div class="userlist-empty" id="user-list-empty" style="display:none;">暂无其他用户</div>
+  </main>
+  <nav>
+    <button onclick="goHome()"><span class="nav-icon">🏠</span>主页</button>
+    <button class="active" onclick="goInteraction()"><span class="nav-icon">❤️</span><span class="nav-label">互动</span></button>
+    <button onclick="goAnniversary()"><span class="nav-icon">🎁</span>纪念日</button>
+    <button onclick="goProfile()"><span class="nav-icon">👤</span>我的</button>
+  </nav>
+  <script src="js/pages/userlist.js"></script>
+  <script>
+    document.addEventListener('plusready', function(){
+      plus.key.addEventListener('backbutton', function(){
+        history.back();
+      }, false);
+    });
+    function goHome() { window.location.href = 'home.html'; }
+    function goInteraction() { window.location.href = 'interaction.html'; }
+    function goAnniversary() { window.location.href = 'anniversary.html'; }
+    function goProfile() { window.location.href = 'profile.html'; }
+  </script>
+</body>
+</html> 

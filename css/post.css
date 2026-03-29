@@ -1,0 +1,164 @@
+body { background: #f6f8fa; margin: 0; font-family: 'Segoe UI', Arial, sans-serif; font-size: 18px; }
+header { background: #ffffff; color: #333; display: flex; align-items: center; justify-content: space-between; padding: 14px 12px; font-size: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-bottom-left-radius: 18px; border-bottom-right-radius: 18px; }
+#back-btn, #submit-btn { background: #ffffff; color: #007aff; border: none; border-radius: 24px; padding: 8px 22px; font-size: 16px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,122,255,0.08); transition: transform 0.1s; }
+#back-btn:active, #submit-btn:active { transform: scale(0.96); }
+header span { flex: 1; text-align: center; font-weight: bold; font-size: 20px; }
+
+#user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px; /* 与文本和其他按钮保持间距 */
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+main { padding: 18px 10px 80px 10px; }
+textarea#post-text { width: 100%; min-height: 90px; font-size: 17px; border-radius: 18px; border: 1.5px solid #ddd; padding: 14px; resize: vertical; box-sizing: border-box; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: border 0.2s; }
+textarea#post-text:focus { border: 1.5px solid #007aff; outline: none; background: #f0f8ff; }
+.media-upload { display: flex; gap: 10px; margin-bottom: 12px; }
+.media-upload button { flex: 1; background: linear-gradient(90deg,#fff,#e6f0ff); color: #007aff; border: 1.5px solid #007aff; border-radius: 18px; padding: 8px 0; font-size: 16px; cursor: pointer; transition: background 0.15s; }
+.media-upload button:active { background: #e6f0ff; }
+#media-preview { display: flex; flex-wrap: wrap; gap: 12px; }
+.preview-img, .preview-video { box-shadow: 0 2px 8px rgba(0,122,255,0.10); border-radius: 12px; border: 1.5px solid #eee; position: relative; }
+.preview-img { width: 90px; height: 90px; object-fit: cover; }
+.preview-video { width: 160px; height: 90px; }
+.hint-message {
+  text-align: center;
+  color: #555; /* 调整颜色，使其更柔和 */
+  font-size: 14px;
+  font-weight: 500; /* 稍微加粗 */
+  margin: 25px auto 0 auto; /* 调整上边距并居中 */
+  padding: 10px 15px; /* 增加内边距 */
+  background-color: #eaf6ff; /* 淡蓝色背景 */
+  border-radius: 12px; /* 圆角 */
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.08); /* 柔和的蓝色阴影 */
+  max-width: 320px; /* 控制最大宽度 */
+  line-height: 1.5; /* 行高 */
+}
+.media-delete { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.5); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; }
+@media (max-width: 500px) {
+  body { font-size: 16px; }
+  header { font-size: 17px; padding: 10px 6px; }
+  #back-btn, #submit-btn { font-size: 15px; padding: 7px 10px; }
+  main { padding: 10px 2px 70px 2px; }
+  .preview-img { width: 70px; height: 70px; }
+  .preview-video { width: 120px; height: 70px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Removed this block, now handled by .dark-theme */
+}
+
+body.dark-theme {
+  background: linear-gradient(135deg, #181c24 0%, #23242a 100%) !important;
+}
+body.dark-theme::before {
+  content: '';
+  position: fixed !important;
+  left: 0 !important; top: 0 !important; right: 0 !important; bottom: 0 !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  display: block !important;
+  background:
+    radial-gradient(circle at 80% 20%, #ffbfa822 0%, transparent 60%),
+    radial-gradient(circle at 15% 70%, #ff6f9122 0%, transparent 70%),
+    radial-gradient(circle at 60% 80%, #fff2 0%, transparent 80%),
+    repeating-radial-gradient(circle at 50% 50%, #fff2 0 1px, transparent 1px 100px) !important;
+  opacity: 0.35 !important;
+}
+
+body.dark-theme header {
+  background: #1f1f1f;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+body.dark-theme #back-btn, body.dark-theme #submit-btn {
+  background: linear-gradient(90deg, #333, #555);
+  color: #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+body.dark-theme #back-btn:active, body.dark-theme #submit-btn:active {
+  transform: scale(0.96);
+}
+
+body.dark-theme #user-avatar {
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
+body.dark-theme textarea#post-text {
+  background: #1f1f1f;
+  color: #e0e0e0;
+  border: 1.5px solid #333;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+body.dark-theme textarea#post-text:focus {
+  border: 1.5px solid #007aff;
+  background: #2a2a2a;
+}
+
+body.dark-theme .media-upload button {
+  background: linear-gradient(90deg, #333, #555);
+  color: #e0e0e0;
+  border: 1.5px solid #444;
+}
+
+body.dark-theme .media-upload button:active {
+  background: #4a4a4a;
+}
+
+body.dark-theme .preview-img, body.dark-theme .preview-video {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  border: 1.5px solid #333;
+}
+
+body.dark-theme .hint-message {
+  color: #b0b0b0;
+  background-color: #2a2a2a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-theme .media-delete {
+  background: rgba(255,255,255,0.2);
+}
+
+@keyframes bounceIn {
+  0% { opacity: 0; transform: translateY(80px) scale(0.9);}
+  60% { opacity: 1; transform: translateY(-12px) scale(1.05);}
+  80% { transform: translateY(4px) scale(0.98);}
+  100% { opacity: 1; transform: translateY(0) scale(1);}
+}
+.page-bounce-in {
+  animation: bounceIn 0.8s cubic-bezier(.23,1.02,.53,.97);
+}
+@keyframes flipInY {
+  0% { opacity: 0; transform: perspective(600px) rotateY(90deg);}
+  60% { opacity: 1; transform: perspective(600px) rotateY(-10deg);}
+  80% { transform: perspective(600px) rotateY(10deg);}
+  100% { opacity: 1; transform: perspective(600px) rotateY(0);}
+}
+.page-flip-in {
+  animation: flipInY 0.7s cubic-bezier(.23,1.02,.53,.97);
+  backface-visibility: hidden;
+}
+@keyframes zoomRotateIn {
+  0% { opacity: 0; transform: scale(0.5) rotate(-30deg);}
+  80% { opacity: 1; transform: scale(1.05) rotate(5deg);}
+  100% { opacity: 1; transform: scale(1) rotate(0);}
+}
+.page-zoom-rotate-in {
+  animation: zoomRotateIn 0.7s cubic-bezier(.23,1.02,.53,.97);
+}
+@keyframes bounceRotateIn {
+  0% { opacity: 0; transform: scale(0.7) rotate(-30deg) translateY(80px);}
+  50% { opacity: 1; transform: scale(1.08) rotate(10deg) translateY(-10px);}
+  70% { transform: scale(0.96) rotate(-5deg) translateY(6px);}
+  100% { opacity: 1; transform: scale(1) rotate(0) translateY(0);}
+}
+.page-bounce-rotate-in {
+  animation: bounceRotateIn 0.9s cubic-bezier(.23,1.02,.53,.97);
+} 

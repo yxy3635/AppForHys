@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原生通知测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 0;
+            margin: 0;
+            background: #f0f2f5;
+            line-height: 1.6;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 顶部导航栏 */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            padding: 10px 12px;
+            height: 60px;
+            box-sizing: border-box;
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        #back-btn {
+            background: #f0f6ff;
+            color: #2196f3;
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        #back-btn:hover {
+            background: #e6f0ff;
+            color: #007aff;
+            box-shadow: 0 4px 16px rgba(179,216,255,0.2);
+        }
+        #back-btn:active {
+            background: #d0e6ff;
+            color: #005bb5;
+        }
+        #back-btn::before {
+            content: '←';
+            font-size: 22px;
+            margin-right: 2px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            flex: 1;
+        }
+        
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* 测试按钮移到右下角 */
+        .test-button-corner {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+        }
+        
+        .test-menu {
+            display: none;
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            padding: 8px;
+            min-width: 180px;
+        }
+        
+        .test-menu.show {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .test-menu button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 2px 0;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .test-menu button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .test-toggle-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 50px;
+            height: 50px;
+            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .test-toggle-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(238, 90, 36, 0.4);
+        }
+        
+        .test-toggle-btn:active {
+            transform: translateY(0) scale(1);
+        }
+        
+        .test-toggle-btn::before {
+            content: '🧪';
+            font-size: 20px;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .success { background: #e8f5e8; color: #2d5a2d; border: 2px solid #4caf50; }
+        .warning { background: #fff3cd; color: #856404; border: 2px solid #ffc107; }
+        .error { background: #f8d7da; color: #721c24; border: 2px solid #dc3545; }
+        .info { background: #e3f2fd; color: #0d47a1; border: 2px solid #2196f3; }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 5px;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        h3 {
+            color: #555;
+            margin-bottom: 15px;
+        }
+        .detail {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <button id="back-btn" onclick="goBack()"></button>
+        <span class="header-title">🔔 原生通知测试</span>
+    </header>
+    
+    <!-- 主要内容区域 -->
+    <div class="main-content">
+        <div class="container">
+            <div class="card">
+                <h3>📱 系统环境</h3>
+                <div id="env-status" class="status info">检测中...</div>
+                <div id="env-detail" class="detail"></div>
+            </div>
+            
+            <div class="card">
+                <h3>🚀 原生通知状态</h3>
+                <div id="native-status" class="status info">检测中...</div>
+                <div id="native-detail" class="detail"></div>
+                <button onclick="checkStatus()">重新检测</button>
+            </div>
+            
+            <div class="card">
+                <h3>📊 测试结果</h3>
+                <div id="result" class="status info">等待测试...</div>
+                <div id="result-detail" class="detail"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 右下角浮动测试按钮 -->
+    <div class="test-button-corner">
+        <div class="test-menu" id="test-menu">
+            <button onclick="testBasic()">基础通知测试</button>
+            <button onclick="testMessage()">消息通知测试</button>
+            <button onclick="testPost()">动态通知测试</button>
+            <button onclick="testLong()">长内容通知测试</button>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 8px 0;">
+            <button onclick="checkPermissions()">检查权限</button>
+            <button onclick="requestPermissions()">请求权限</button>
+            <button onclick="resetPermissionAsked()">重置权限记录</button>
+            <button onclick="clearAll()">清除通知</button>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 8px 0;">
+            <button onclick="testGlobalNotification()">测试全局通知</button>
+            <button onclick="resetGlobalChecker()">重置全局检查器</button>
+        </div>
+        <button class="test-toggle-btn" onclick="toggleTestMenu()"></button>
+    </div>
+
+    <!-- 加载原生通知管理器 -->
+    <script src="js/notification-native.js"></script>
+    
+    <script>
+        // 简单的状态显示函数
+        function updateStatus(elementId, message, type = 'info', detail = '') {
+            const element = document.getElementById(elementId);
+            element.className = `status ${type}`;
+            element.textContent = message;
+            
+            const detailElement = document.getElementById(elementId.replace('-status', '-detail'));
+            if (detailElement) {
+                detailElement.innerHTML = detail;
+            }
+        }
+        
+        function updateResult(message, type = 'info', detail = '') {
+            updateStatus('result', message, type, detail);
+        }
+        
+        // 检查系统环境
+        function checkEnvironment() {
+            console.log('检查系统环境...');
+            
+            if (typeof window.plus === 'undefined') {
+                updateStatus('env-status', '⚠️ 浏览器环境', 'warning', 
+                    '<span class="badge">浏览器模式</span><span class="badge">功能受限</span>');
+                return false;
+            }
+            
+            const osName = plus.os ? plus.os.name : '未知';
+            const osVersion = plus.os ? plus.os.version : '未知';
+            const hasNativeJs = !!plus.android;
+            
+            if (hasNativeJs) {
+                updateStatus('env-status', '✅ 5+App + Native.js', 'success',
+                    `<span class="badge">平台: ${osName}</span><span class="badge">版本: ${osVersion}</span><span class="badge">Native.js: 可用</span>`);
+                return true;
+            } else {
+                updateStatus('env-status', '❌ Native.js 不可用', 'error',
+                    `<span class="badge">平台: ${osName}</span><span class="badge">Native.js: 不可用</span>`);
+                return false;
+            }
+        }
+        
+        // 检查原生通知管理器
+        function checkNativeManager() {
+            console.log('检查原生通知管理器...');
+            
+            if (typeof NativeNotificationManager === 'undefined') {
+                updateStatus('native-status', '❌ 管理器未加载', 'error',
+                    '<span class="badge">错误: 管理器未找到</span>');
+                return false;
+            }
+            
+            const isReady = NativeNotificationManager.isReady;
+            const hasError = NativeNotificationManager.hasError;
+            
+            if (isReady && !hasError) {
+                const hasPermission = NativeNotificationManager.checkNotificationPermission();
+                updateStatus('native-status', '✅ 管理器就绪', 'success',
+                    `<span class="badge">状态: 就绪</span><span class="badge">权限: ${hasPermission ? '已授权' : '未授权'}</span>`);
+                return true;
+            } else {
+                updateStatus('native-status', '❌ 管理器未就绪', 'error',
+                    `<span class="badge">就绪: ${isReady}</span><span class="badge">错误: ${hasError}</span>`);
+                return false;
+            }
+        }
+        
+        // 重新检测状态
+        function checkStatus() {
+            updateResult('正在检测...', 'info');
+            checkEnvironment();
+            setTimeout(() => {
+                checkNativeManager();
+            }, 500);
+        }
+        
+        // 测试基础通知
+        function testBasic() {
+            updateResult('发送基础通知...', 'info');
+            
+            if (typeof NativeNotificationManager === 'undefined') {
+                updateResult('❌ 管理器不可用', 'error');
+                return;
+            }
+            
+            const success = NativeNotificationManager.testNotification();
+            if (success) {
+                updateResult('✅ 基础通知发送成功', 'success', 
+                    '检查手机通知栏是否显示通知');
+            } else {
+                updateResult('❌ 基础通知发送失败', 'error', 
+                    '请检查权限或查看控制台错误');
+            }
+        }
+        
+        // 测试消息通知
+        function testMessage() {
+            updateResult('发送消息通知...', 'info');
+            
+            if (typeof NativeNotificationManager === 'undefined') {
+                updateResult('❌ 管理器不可用', 'error');
+                return;
+            }
+            
+            const success = NativeNotificationManager.notifyNewMessage({
+                senderName: '测试联系人',
+                content: '这是一条来自原生通知系统的测试消息！',
+                senderId: 'test_user'
+            });
+            
+            if (success) {
+                updateResult('✅ 消息通知发送成功', 'success',
+                    '模拟收到新聊天消息的通知');
+            } else {
+                updateResult('❌ 消息通知发送失败', 'error');
+            }
+        }
+        
+        // 测试动态通知
+        function testPost() {
+            updateResult('发送动态通知...', 'info');
+            
+            if (typeof NativeNotificationManager === 'undefined') {
+                updateResult('❌ 管理器不可用', 'error');
+                return;
+            }
+            
+            const success = NativeNotificationManager.notifyNewPost({
+                username: '测试用户',
+                content: '发布了一条新动态，快来看看吧！使用原生Android通知系统。'
+            });
+            
+            if (success) {
+                updateResult('✅ 动态通知发送成功', 'success',
+                    '模拟有人发布新动态的通知');
+            } else {
+                updateResult('❌ 动态通知发送失败', 'error');
+            }
+        }
+        
+        // 测试长内容通知
+        function testLong() {
+            updateResult('发送长内容通知...', 'info');
+            
+            if (typeof NativeNotificationManager === 'undefined') {
+                updateResult('❌ 管理器不可用', 'error');
+                return;
+            }
+            
+            const longContent = '这是一条非常长的通知内容测试。当通知内容超过一定长度时，Android原生通知系统会自动使用BigTextStyle来完整显示所有内容，确保用户能够看到完整的信息而不被截断。这对于重要信息的传达非常有用。';
+            
+            const success = NativeNotificationManager.sendNativeNotification({
+                title: '长内容通知测试',
+                content: longContent,
+                type: 'long_content_test'
+            });
+            
+            if (success) {
+                updateResult('✅ 长内容通知发送成功', 'success',
+                    '测试长文本的BigTextStyle显示');
+            } else {
+                updateResult('❌ 长内容通知发送失败', 'error');
+            }
+        }
+        
+        // 检查权限
+        function checkPermissions() {
+            updateResult('检查通知权限...', 'info');
+            
+            if (typeof NativeNotificationManager === 'undefined') {
+                updateResult('❌ 管理器不可用', 'error');
+                return;
+            }
+            
+            const hasPermission = NativeNotificationManager.checkNotificationPermission();
+            if (hasPermission) {
+                updateResult('✅ 通知权限已授权', 'success',
+                    '应用具有发送通知的权限');
+            } else {
+                updateResult('❌ 通知权限未授权', 'error',
+                    '需要在系统设置中开启通知权限');
+            }
+        }
+        
+        // 请求权限
+        function requestPermissions() {
+            updateResult('请求通知权限...', 'info');
+            
+            if (typeof NativeNotificationManager === 'undefined') {
+                updateResult('❌ 管理器不可用', 'error');
+                return;
+            }
+            
+            try {
+                console.log('测试页面 - 手动请求权限');
+                const success = NativeNotificationManager.requestNotificationPermissionWithDialog();
+                console.log('测试页面 - 权限请求结果:', success);
+                
+                if (success) {
+                    updateResult('✅ 通知权限已开启', 'success',
+                        '应用已具有发送通知的权限');
+                } else {
+                    updateResult('ℹ️ 权限请求已发起', 'info',
+                        '请在弹出的对话框中选择"去设置"来开启权限');
+                }
+            } catch (e) {
+                console.log('测试页面 - 权限请求出错:', e);
+                updateResult('❌ 权限请求失败', 'error',
+                    `错误: ${e.message}`);
+            }
+        }
+        
+        // 强制清除权限询问记录
+        function resetPermissionAsked() {
+            localStorage.removeItem('notification_permission_asked');
+            updateResult('✅ 权限询问记录已清除', 'success',
+                '下次打开主页时会重新询问权限');
+            console.log('测试页面 - 权限询问记录已清除');
+        }
+        
+        // 测试全局通知检查器
+        function testGlobalNotification() {
+            updateResult('触发全局通知检查...', 'info');
+            
+            if (typeof GlobalNotificationChecker === 'undefined') {
+                updateResult('❌ 全局通知检查器不可用', 'error');
+                return;
+            }
+            
+            console.log('测试页面 - 手动触发全局检查');
+            GlobalNotificationChecker.manualCheck();
+            
+            updateResult('✅ 全局检查已触发', 'success',
+                '检查控制台日志查看检查过程');
+        }
+        
+        // 重置全局检查器状态
+        function resetGlobalChecker() {
+            updateResult('重置全局检查器状态...', 'info');
+            
+            if (typeof GlobalNotificationChecker === 'undefined') {
+                updateResult('❌ 全局通知检查器不可用', 'error');
+                return;
+            }
+            
+            console.log('测试页面 - 重置全局检查器状态');
+            GlobalNotificationChecker.reset();
+            
+            updateResult('✅ 全局检查器状态已重置', 'success',
+                '下次检查时会重新识别新消息和新动态');
+        }
+        
+        // 清除所有通知
+        function clearAll() {
+            updateResult('清除所有通知...', 'info');
+            
+            if (typeof NativeNotificationManager === 'undefined') {
+                updateResult('❌ 管理器不可用', 'error');
+                return;
+            }
+            
+            try {
+                NativeNotificationManager.clearAllNotifications();
+                updateResult('✅ 已清除所有通知', 'success',
+                    '通知栏中的应用通知已清除');
+            } catch (e) {
+                updateResult('❌ 清除通知失败', 'error',
+                    `错误: ${e.message}`);
+            }
+        }
+        
+        // 返回按钮功能
+        function goBack() {
+            history.back();
+        }
+        
+        // 测试菜单切换
+        function toggleTestMenu() {
+            const menu = document.getElementById('test-menu');
+            if (menu.classList.contains('show')) {
+                menu.classList.remove('show');
+            } else {
+                menu.classList.add('show');
+            }
+        }
+        
+        // 点击页面其他地方关闭菜单
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('test-menu');
+            const toggleBtn = document.querySelector('.test-toggle-btn');
+            
+            if (!menu.contains(e.target) && !toggleBtn.contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
+        
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('页面加载完成，开始检测...');
+            checkStatus();
+        });
+        
+        // plusready事件和返回键处理
+        document.addEventListener('plusready', function() {
+            console.log('plusready事件触发');
+            setTimeout(checkStatus, 500);
+            
+            // 监听手机返回键
+            plus.key.addEventListener('backbutton', function(){
+                history.back();
+            }, false);
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>个人中心</title>
+  <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <script src="js/config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/notification-native.js"></script>
+  <script src="js/global-notification.js"></script>
+  <script src="js/snow.js"></script>
+  <script src="js/snow-init.js"></script>
+</head>
+<body>
+  <header class="profile-header">
+    <span class="profile-title">个人中心</span>
+    <span class="notification-test-corner" onclick="goNotificationTest()" title="通知测试">🔔</span>
+  </header>
+  <main class="profile-main page-elastic-fade-in">
+    <div class="profile-card">
+      <div class="profile-avatar-container">
+        <img id="avatar" src="img/default-avatar.png" alt="头像" onclick="chooseAvatar()">
+        <input type="file" id="avatar-input" accept="image/*" style="display:none;" onchange="updateAvatar(event)">
+        <button class="edit-avatar-btn" onclick="chooseAvatar()">✏️</button>
+      </div>
+      <div class="profile-details">
+        <h2 id="display-username">用户名</h2>
+        <label for="edit-username" class="edit-field hide">昵称/用户名（登录用这个，可以用中文！）</label>
+        <input type="text" id="edit-username" class="edit-field hide" value="用户名">
+        <p id="display-signature">个性签名</p>
+        <label for="edit-signature" class="edit-field hide">个性签名~</label>
+        <textarea id="edit-signature" class="edit-field hide" placeholder="添加你的个性签名..."></textarea>
+        <div class="profile-actions">
+          <button id="edit-profile-btn" onclick="toggleEditMode()">编辑资料</button>
+          <button id="save-profile-btn" class="hide" onclick="saveProfile()">保存</button>
+          <button id="cancel-edit-btn" class="hide" onclick="cancelEdit()">取消</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>设置 <span id="easter-egg-entry" title="点我有惊喜！" style="margin-left:8px; cursor:pointer; opacity:0.5; transition:opacity 0.2s;">🪄</span></h2>
+      <div class="setting-item">
+        <span>暗/亮主题切换</span>
+        <div class="theme-switch">
+          <input type="checkbox" id="theme-toggle" class="checkbox">
+          <label for="theme-toggle" class="toggle-label">
+            <span class="ball"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-item">
+        <span>雪花特效</span>
+        <div class="theme-switch">
+          <input type="checkbox" id="snow-toggle" class="checkbox">
+          <label for="snow-toggle" class="toggle-label">
+            <span class="ball"></span>
+          </label>
+        </div>
+      </div>
+      <!-- More settings items can go here -->
+      <div class="setting-item">
+        <button id="check-update-btn" class="full-width-button" type="button">检测新版本</button>
+        <div id="update-progress-bar" style="display:none; margin-top:10px; width:100%;">
+          <div id="update-progress-inner" style="height:12px; width:0; background:#4f8cff; border-radius:6px; transition:width 0.2s;"></div>
+          <span id="update-progress-text" style="font-size:13px; color:#4f8cff; margin-left:8px;"></span>
+        </div>
+      </div>
+
+      <div class="setting-item" style="display:flex; gap:12px;">
+        <!-- <button id="server-status-btn" class="server-status-button" style="flex:1" onclick="showServerStatus()">服务器状态</button> -->
+        <button id="about-btn" class="server-status-button about-button" style="flex:1" onclick="showAbout()">关于</button>
+      </div>
+
+      <div class="setting-item">
+        <button id="logout-btn" class="full-width-button logout-button" onclick="logout()">退出登录</button>
+      </div>
+    </div>
+  </main>
+  <nav id="bottom-nav">
+    <button onclick="goHome()">主页</button>
+    <button onclick="goInteraction()">互动</button>
+    <button onclick="goAnniversary()">纪念日</button>
+    <button class="active" onclick="goProfile()">我的</button>
+  </nav>
+  <!-- 服务器状态模态框 -->
+  <div id="server-status-modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>服务器状态</h3>
+        <span class="close" onclick="closeServerStatusModal()">&times;</span>
+      </div>
+      <div class="modal-body" id="server-status-content">
+        <div class="server-status-loading">
+          <div class="loading-spinner"></div>
+          <p>正在获取服务器状态...</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="refreshServerStatus()">🔄 刷新</button>
+        <button onclick="closeServerStatusModal()">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 关于 模态框（样式与服务器状态一致，仅颜色不同） -->
+  <div id="about-modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>关于</h3>
+        <span class="close" onclick="closeAboutModal()">&times;</span>
+      </div>
+      <div class="modal-body" id="about-modal-content">
+        <!-- 动态填充 -->
+      </div>
+      <div class="modal-footer">
+        <button onclick="closeAboutModal()">好的</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/modal.js"></script>
+  <script src="js/pages/profile.js"></script>
+  <script src="js/pages/nav-unread.js"></script>
+  <script src="js/nav-indicator.js"></script>
+  <script>
+    document.addEventListener('plusready', function(){
+      plus.key.addEventListener('backbutton', function(){
+        history.back();
+      }, false);
+    });
+    function goHome() { window.location.href = 'home.html'; }
+    function goInteraction() { window.location.href = 'interaction.html'; }
+    function goAnniversary() { window.location.href = 'anniversary.html'; }
+    function goProfile() { window.location.href = 'profile.html'; }
+    function goNotificationTest() { window.location.href = 'test-notification-simple.html'; }
+    document.getElementById('easter-egg-entry').addEventListener('click', function() {
+      window.location.href = 'love.html';
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      var currentUserId = localStorage.getItem('user_id');
+      updateInteractionExclaimOnce(currentUserId);
+    });
+    function showAbout(){
+      var modal = document.getElementById('about-modal');
+      var body = document.getElementById('about-modal-content');
+      if (modal) modal.style.display = 'flex';
+      if (body) {
+        body.innerHTML = '<div class="server-status-loading"><div class="loading-spinner"></div><p>正在获取版本信息...</p></div>';
+      }
+      // 当前版本（App 内优先）
+      function getCurrentVersion(){
+        return new Promise(resolve => {
+          try {
+            if (window.plus && plus.runtime && plus.runtime.getProperty) {
+              plus.runtime.getProperty(plus.runtime.appid, function(inf){
+                resolve(inf && inf.version ? inf.version : (localStorage.getItem('app_version') || '未知'));
+              });
+            } else {
+              resolve(localStorage.getItem('app_version') || '未知');
+            }
+          } catch(e){ resolve('未知'); }
+        });
+      }
+      // 最新版本（服务器）
+      function getLatestVersion(){
+        var url = (window.APP_CONFIG && APP_CONFIG.VERSION_CHECK_URL) ? APP_CONFIG.VERSION_CHECK_URL : (window.API_BASE_URL ? (API_BASE_URL + '/version') : null);
+        if (!url) return Promise.resolve(null);
+        return fetch(url).then(r=>r.json()).catch(()=>null);
+      }
+      Promise.all([getCurrentVersion(), getLatestVersion()]).then(([curr, latestData]) => {
+        var latest = latestData && (latestData.version || latestData.latest || latestData.tag) || '未知';
+        var html = '<div style="text-align:left;line-height:1.9; padding:20px;">'
+          + '<p><b>软件名称：</b>YandH</p>'
+          + '<p><b>当前版本：</b>' + curr + '</p>'
+          + '<p><b>最新版本：</b>' + latest + '</p>'
+          + '<p><b>作者：</b>千纸雏鸳</p>'
+          + '<p><b>邮箱：</b>yxy3635@gmail.com</p>'
+          + '</div>';
+        if (body) body.innerHTML = html;
+      });
+    }
+    function closeAboutModal(){
+      var modal = document.getElementById('about-modal');
+      if (modal) modal.style.display = 'none';
+    }
+  </script>
+</body>
+</html> 

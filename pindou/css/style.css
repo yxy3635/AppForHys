@@ -1,0 +1,403 @@
+/* 基础设置 */
+:root {
+    --primary-color: #ff6b81;
+    --secondary-color: #2f3542;
+    --background-color: #f1f2f6;
+    --card-bg: #ffffff;
+    --text-color: #2f3542;
+    --border-radius: 12px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding: 15px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #dfe4ea;
+}
+
+header h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+header p {
+    color: #747d8c;
+    font-size: 1rem;
+}
+
+/* 控制区域 */
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    /* 统一垂直居中，解决高低不平问题 */
+    align-items: center; 
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.control-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+}
+
+.range-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+/* 自定义文件上传按钮 */
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 2px dashed var(--primary-color);
+    color: var(--primary-color);
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    background: transparent;
+    text-align: center;
+    width: 100%;
+    display: flex; /* 使用 flex 保证文字垂直居中 */
+    justify-content: center;
+    align-items: center;
+    height: 40px; /* 固定高度，与其他输入框对齐 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.custom-file-upload:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* 输入框样式 */
+input[type="range"] {
+    flex-grow: 1;
+    cursor: pointer;
+    height: 40px; /* 统一高度 */
+    margin: 0;
+}
+
+input[type="number"] {
+    width: 70px;
+    height: 40px; /* 统一高度 */
+    padding: 5px;
+    border: 1px solid #ced6e0;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+select {
+    padding: 0 12px;
+    border-radius: 6px;
+    border: 1px solid #ced6e0;
+    background-color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    width: 100%;
+    height: 40px; /* 统一高度 */
+}
+
+/* Checkbox 样式 */
+.checkbox-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    height: 40px; /* 统一高度 */
+    padding-top: 24px; /* 强行对齐：因为其他组有 label，这个没有顶部label占位，所以加 padding 顶下来 */
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* 按钮样式 */
+button {
+    padding: 0 20px;
+    height: 40px; /* 统一高度 */
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    width: 100%;
+    max-width: 300px;
+    /* 同样处理对齐问题 */
+    margin-top: 24px; 
+}
+
+.primary-btn {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 6px rgba(255, 107, 129, 0.3);
+}
+
+.primary-btn:hover {
+    background-color: #ff4757;
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.secondary-btn:hover {
+    background-color: #1e272e;
+    transform: translateY(-2px);
+}
+
+.secondary-btn:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* 预览区域 */
+.preview-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    flex-grow: 1;
+    width: 100%;
+    /* 移除 overflow: hidden，允许内容撑开 */
+}
+
+.canvas-wrapper {
+    position: relative;
+    width: 100%;
+    /* 移除最大高度和滚动条，让其自然撑开 */
+    /* max-height: 70vh; */
+    /* overflow: auto; */
+    border: 1px solid #dfe4ea;
+    border-radius: 8px;
+    padding: 10px; /* 加点内边距 */
+    background-color: #eee; 
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+canvas {
+    display: none;
+    image-rendering: pixelated; 
+    /* 关键：让 Canvas 宽度自适应容器，高度自动保持比例 */
+    width: 100%; 
+    height: auto;
+    /* 限制最大宽度，防止在超大屏幕上太大，或者让其保持原大？通常限制一下比较好 */
+    max-width: 100%; 
+    cursor: crosshair;
+    background-color: white;
+    margin: auto;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+/* 空状态样式 */
+.empty-state {
+    text-align: center;
+    color: #a4b0be;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    opacity: 0.5;
+}
+
+/* Tooltip 样式 */
+.tooltip {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 9999;
+    white-space: nowrap;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 统计信息面板 */
+.stats-panel {
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    margin-top: 10px;
+}
+
+.stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #dfe4ea;
+    padding-bottom: 10px;
+}
+
+.stats-header h3 {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+#colorList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+    list-style: none;
+}
+
+#colorList li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    padding: 6px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.color-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.1);
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.color-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    line-height: 1.2;
+    overflow: hidden; 
+}
+
+.color-code {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 0.9rem;
+}
+
+.color-name {
+    color: #747d8c;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.color-count {
+    font-size: 0.85rem;
+    color: var(--secondary-color);
+    white-space: nowrap;
+}
+
+.footer {
+    margin-top: auto;
+    text-align: center;
+    padding-top: 15px;
+    color: #a4b0be;
+    font-size: 0.8rem;
+}
+
+/* 桌面端调整 */
+@media (min-width: 900px) { /* 稍微增加断点 */
+    .controls {
+        flex-direction: row;
+        /* 在宽屏下取消强制居中，允许顶部对齐（如果有的控件有label有的没有） */
+        /* 但为了美观，我们这里全部强制顶部对齐，并用 margin 修正 */
+        align-items: flex-start; 
+    }
+    
+    .control-group {
+        width: auto;
+        min-width: 150px;
+    }
+    
+    .checkbox-group {
+        padding-top: 24px; /* 保持与有 label 的输入框对齐 */
+    }
+    
+    button {
+        width: auto;
+        margin-top: 24px; /* 保持与输入框对齐 */
+    }
+    
+    #colorList {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+}

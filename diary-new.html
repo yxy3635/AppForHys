@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>写手记</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/diary.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <script src="js/config.js"></script>
+  <script src="js/notification-native.js"></script>
+  <script src="js/global-notification.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/snow.js"></script>
+  <script src="js/snow-init.js"></script>
+</head>
+<body>
+  <header class="home-header diary-header">
+    <button id="back-btn" onclick="history.back()"></button>
+    <div class="diary-header-content">
+      <span class="header-main">写手记</span>
+      <span class="diary-subtitle">记录美好时光</span>
+    </div>
+    <button id="save-btn" onclick="saveDiary()">保存</button>
+  </header>
+
+  <main class="diary-main">
+    <div class="diary-form">
+      <!-- 标题输入 -->
+      <div class="form-group">
+        <label for="diary-title">标题</label>
+        <input type="text" id="diary-title" placeholder="给这篇手记起个标题吧~" maxlength="50">
+      </div>
+
+      <!-- 心情选择 -->
+      <div class="form-group">
+        <label>今天的心情</label>
+        <div class="mood-selector">
+          <div class="mood-option" data-mood="😊" onclick="selectMood(this)">
+            <span class="mood-emoji">😊</span>
+            <span class="mood-text">开心</span>
+          </div>
+          <div class="mood-option" data-mood="🥰" onclick="selectMood(this)">
+            <span class="mood-emoji">🥰</span>
+            <span class="mood-text">甜蜜</span>
+          </div>
+          <div class="mood-option" data-mood="😞" onclick="selectMood(this)">
+            <span class="mood-emoji">😞</span>
+            <span class="mood-text">不高兴</span>
+          </div>
+          <div class="mood-option" data-mood="🤔" onclick="selectMood(this)">
+            <span class="mood-emoji">🤔</span>
+            <span class="mood-text">思考</span>
+          </div>
+          <div class="mood-option" data-mood="😢" onclick="selectMood(this)">
+            <span class="mood-emoji">😢</span>
+            <span class="mood-text">感动</span>
+          </div>
+          <div class="mood-option" data-mood="🎉" onclick="selectMood(this)">
+            <span class="mood-emoji">🎉</span>
+            <span class="mood-text">庆祝</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 内容输入 -->
+      <div class="form-group">
+        <label for="diary-content">内容</label>
+        <textarea id="diary-content" placeholder="写下今天的美好回忆..." rows="8" maxlength="2000"></textarea>
+        <div class="char-count">
+          <span id="char-count">0</span>/2000
+        </div>
+      </div>
+
+      <!-- 图片上传 -->
+      <div class="form-group">
+        <div style="display: flex; align-items: center; justify-content: space-between;"><label>添加图片</label><span style="font-size: 12px; color: var(--text-color-medium);">点一下图片可以删除 </span></div>
+        <div class="image-upload-area">
+          <div class="image-preview" id="image-preview">
+          </div>
+          <input type="file" id="image-input" accept="image/*" multiple style="display:none;" onchange="handleImageUpload(event)">
+        </div>
+      </div>
+
+      <!-- 标签 -->
+      <div class="form-group">
+        <label>标签</label>
+        <div class="tag-input-area">
+          <div class="tag-list" id="tag-list">
+          </div>
+          <div class="tag-input-wrapper">
+            <input type="text" id="tag-input" placeholder="添加标签..." maxlength="10" onkeypress="handleTagInput(event)">
+            <button onclick="addTag()">+</button>
+          </div>
+        </div>
+        <div class="tag-suggestions">
+          <span class="tag-suggestion" onclick="addSuggestionTag('约会')">约会</span>
+          <span class="tag-suggestion" onclick="addSuggestionTag('美食')">美食</span>
+          <span class="tag-suggestion" onclick="addSuggestionTag('旅行')">旅行</span>
+          <span class="tag-suggestion" onclick="addSuggestionTag('电影')">电影</span>
+          <span class="tag-suggestion" onclick="addSuggestionTag('礼物')">礼物</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/modal.js"></script>
+  <script src="js/pages/diary-new.js"></script>
+  <script>
+    // 物理返回键拦截
+    document.addEventListener('plusready', function(){
+      plus.key.addEventListener('backbutton', function(){
+        handleBack();
+      }, false);
+    });
+    // 左上角返回按钮拦截
+    document.getElementById('back-btn') && (document.getElementById('back-btn').onclick = handleBack);
+    // 统一返回处理
+    function handleBack() {
+      const title = document.getElementById('diary-title').value.trim();
+      const content = document.getElementById('diary-content').value.trim();
+      if (title || content) {
+        showModal('您有未保存的内容，确定要离开吗？', 'confirm', '温馨提示').then(res => {
+          if (res) history.back();
+        });
+      } else {
+        history.back();
+      }
+    }
+  </script>
+</body>
+</html> 

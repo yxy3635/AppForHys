@@ -1,0 +1,976 @@
+/* 手记功能样式 */
+
+/* 头部样式 */
+.diary-header {
+  background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+  color: white;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.diary-header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.diary-subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-top: 2px;
+  font-weight: normal;
+}
+
+#search-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#search-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 搜索栏 */
+.search-bar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background: var(--bg-color-card);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  z-index: 15;
+  animation: slideDown 0.3s ease;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  background: var(--bg-color-light);
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-size: 16px;
+  color: var(--text-color-light);
+}
+
+.search-bar input::placeholder {
+  color: var(--text-color-medium);
+}
+
+.search-bar button {
+  background: #ff6b9d;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-bar button:hover {
+  background: #ff5a8a;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 主内容区域 */
+.diary-main {
+  padding: 20px 16px 100px 16px;
+  background: var(--bg-color-light);
+  min-height: 100vh;
+}
+
+/* 统计信息 */
+.diary-stats {
+  display: flex;
+  justify-content: space-around;
+  background: var(--bg-color-card);
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px var(--shadow-color);
+  animation: fadeInUp 0.6s ease;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ff6b9d;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--text-color-medium);
+}
+
+/* 新建手记按钮 */
+.new-diary-btn {
+  background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 16px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  animation: fadeInUp 0.6s ease 0.1s both;
+}
+
+.new-diary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+}
+
+.new-diary-btn:active {
+  transform: translateY(0);
+}
+
+.new-diary-icon {
+  font-size: 20px;
+}
+
+/* 手记列表 */
+.diary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.diary-item {
+  background: var(--bg-color-card);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 16px var(--shadow-color);
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fadeInUp 0.6s ease;
+  cursor: pointer;
+  border-left: 4px solid #ff6b9d;
+}
+
+.diary-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px var(--shadow-color);
+}
+
+.diary-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.diary-date {
+  font-size: 14px;
+  color: var(--text-color-medium);
+  font-weight: 500;
+}
+
+.diary-mood {
+  font-size: 20px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.diary-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--text-color-light);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.diary-content {
+  font-size: 16px;
+  color: var(--text-color-medium);
+  line-height: 1.6;
+  margin-bottom: 12px;
+  display: block;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: visible;
+}
+
+.diary-images {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.diary-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--border-color);
+}
+
+.diary-image-more {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  background: rgba(255, 107, 157, 0.1);
+  color: #ff6b9d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid var(--border-color);
+}
+
+.diary-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--text-color-medium);
+}
+
+.diary-author {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.diary-author-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.diary-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.diary-tag {
+  background: rgba(255, 107, 157, 0.1);
+  color: #ff6b9d;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* 空状态 */
+.diary-empty {
+  text-align: center;
+  padding: 60px 20px;
+  animation: fadeInUp 0.6s ease;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.6;
+}
+
+.empty-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text-color-light);
+  margin-bottom: 12px;
+}
+
+.empty-desc {
+  font-size: 16px;
+  color: var(--text-color-medium);
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+
+.empty-btn {
+  background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(255, 107, 157, 0.3);
+  transition: transform 0.2s;
+}
+
+.empty-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* 暗色主题适配 */
+body.dark-theme .diary-stats {
+  background: var(--bg-color-card);
+}
+
+body.dark-theme .diary-item {
+  background: var(--bg-color-card);
+  border-left-color: #ff8fab;
+}
+
+body.dark-theme .diary-tag {
+  background: rgba(255, 143, 171, 0.2);
+  color: #ff8fab;
+}
+
+/* 响应式设计 */
+@media (max-width: 500px) {
+  .diary-main {
+    padding: 16px 12px 100px 12px;
+  }
+  
+  .diary-stats {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .stat-number {
+    font-size: 24px;
+  }
+  
+  .stat-label {
+    font-size: 12px;
+  }
+  
+  .new-diary-btn {
+    padding: 14px 20px;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .diary-item {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  
+  .diary-title {
+    font-size: 16px;
+  }
+  
+  .diary-content {
+    font-size: 14px;
+  }
+  
+  .diary-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .diary-image-more {
+    width: 60px;
+    height: 60px;
+    font-size: 14px;
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 加载动画 */
+.diary-loading {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-color-medium);
+}
+
+.diary-loading::after {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  border-top-color: #ff6b9d;
+  animation: spin 1s linear infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 新建手记表单样式 */
+.diary-form {
+  background: var(--bg-color-card);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 16px var(--shadow-color);
+  animation: fadeInUp 0.6s ease;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-color-light);
+  margin-bottom: 8px;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+  width: 100%;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 16px;
+  color: var(--text-color-light);
+  background: var(--bg-color-light);
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #ff6b9d;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.char-count {
+  text-align: right;
+  font-size: 14px;
+  color: var(--text-color-medium);
+  margin-top: 4px;
+}
+
+/* 心情选择器 */
+.mood-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.mood-option {
+  background: var(--bg-color-light);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mood-option:hover {
+  border-color: #ff6b9d;
+  transform: translateY(-2px);
+}
+
+.mood-option.selected {
+  border-color: #ff6b9d;
+  background: rgba(255, 107, 157, 0.1);
+}
+
+.mood-emoji {
+  display: block;
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.mood-text {
+  font-size: 14px;
+  color: var(--text-color-medium);
+}
+
+/* 图片上传区域 */
+.image-upload-area {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 15px;
+  transition: border-color 0.2s;
+}
+
+.image-upload-area:hover {
+  border-color: #ff6b9d;
+}
+
+.upload-placeholder {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--border-color);
+  border-radius: 8px;
+  height: 80px;
+  transition: all 0.2s;
+  background: rgba(255, 107, 157, 0.02);
+}
+
+.upload-placeholder:hover {
+  border-color: #ff6b9d;
+  background: rgba(255, 107, 157, 0.05);
+}
+
+.upload-icon {
+  display: block;
+  font-size: 24px;
+  margin-bottom: 4px;
+  opacity: 0.6;
+}
+
+.upload-text {
+  font-size: 12px;
+  color: var(--text-color-medium);
+  text-align: center;
+}
+
+.image-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 8px;
+  min-height: 80px; /* 确保有足够的高度显示占位符 */
+}
+
+.preview-image {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  border: 2px solid var(--border-color);
+}
+
+.preview-image:hover {
+  transform: scale(1.05);
+}
+
+/* 标签输入区域 */
+.tag-input-area {
+  margin-bottom: 12px;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tag-input-wrapper {
+  display: flex;
+  gap: 8px;
+}
+
+.tag-input-wrapper input {
+  flex: 1;
+}
+
+.tag-input-wrapper button {
+  background: #ff6b9d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.tag-input-wrapper button:hover {
+  background: #ff5a8a;
+}
+
+.tag-remove {
+  margin-left: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #ff6b9d;
+}
+
+.tag-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-suggestion {
+  background: rgba(255, 107, 157, 0.1);
+  color: #ff6b9d;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.tag-suggestion:hover {
+  background: rgba(255, 107, 157, 0.2);
+}
+
+/* 复选框样式 */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--text-color-light);
+}
+
+.checkbox-label input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  margin-right: 12px;
+  position: relative;
+  transition: border-color 0.2s;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+  background: #ff6b9d;
+  border-color: #ff6b9d;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* 保存按钮 */
+#save-btn {
+  background: #ff6b9d;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#save-btn:hover {
+  background: #ff5a8a;
+}
+
+/* 响应式设计 */
+@media (max-width: 500px) {
+  .diary-form {
+    padding: 16px;
+  }
+  
+  .mood-selector {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .mood-option {
+    padding: 12px 8px;
+  }
+  
+  .mood-emoji {
+    font-size: 20px;
+  }
+  
+  .mood-text {
+    font-size: 12px;
+  }
+  
+  .image-preview {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    min-height: 60px;
+  }
+  
+  .preview-image {
+    height: 60px;
+  }
+  
+  .upload-placeholder {
+    height: 60px;
+  }
+  
+  .upload-icon {
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+  
+  .upload-text {
+    font-size: 10px;
+  }
+}
+
+/* 手记详情页样式 */
+.diary-detail-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.diary-detail {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.diary-detail-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.diary-edit-btn,
+.diary-delete-btn {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.diary-edit-btn {
+    background: #ff8fab;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(255,143,171,0.08);
+}
+
+.diary-edit-btn:hover {
+    background: #ff5e9c;
+}
+
+.diary-delete-btn {
+    background: #ff6b6b;
+    color: white;
+}
+
+.diary-delete-btn:hover {
+    background: #ff5252;
+    transform: translateY(-2px);
+}
+
+/* 详情页图片样式 */
+.diary-detail .diary-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.diary-detail .diary-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.diary-detail .diary-image:hover {
+    transform: scale(1.05);
+}
+
+/* 详情页标签样式 */
+.diary-detail .diary-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.diary-detail .diary-tag {
+    background: var(--tag-bg);
+    color: var(--tag-color);
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 14px;
+    border: 1px solid var(--tag-border);
+}
+
+/* 详情页作者信息样式 */
+.diary-detail .diary-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.diary-detail .diary-author-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.diary-detail .diary-author span {
+    font-size: 14px;
+    color: var(--text-color-medium);
+    font-weight: 500;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .diary-detail-container {
+        padding: 16px;
+    }
+    
+    .diary-detail {
+        padding: 16px;
+    }
+    
+    .diary-detail-actions {
+        flex-direction: column;
+    }
+    
+    .diary-edit-btn,
+    .diary-delete-btn {
+        width: 100%;
+    }
+    
+    .diary-detail .diary-images {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+    
+    .diary-detail .diary-image {
+        height: 120px;
+    }
+}
+
+body.dark-theme .diary-detail-container {
+  background: var(--bg-color-light);
+}
+body.dark-theme .diary-detail {
+  background: var(--bg-color-card);
+  color: var(--text-color-light);
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+body.dark-theme .diary-detail-actions {
+  border-top: 1px solid var(--border-color);
+}
+body.dark-theme .diary-edit-btn {
+  background: #3a7afe;
+  color: #fff;
+}
+body.dark-theme .diary-edit-btn:hover {
+  background: #2556b8;
+}
+body.dark-theme .diary-delete-btn {
+  background: #ff6b81;
+  color: #fff;
+}
+body.dark-theme .diary-delete-btn:hover {
+  background: #d32f2f;
+}
+body.dark-theme .diary-detail .diary-image {
+  background: var(--bg-color-light);
+  border: 1px solid var(--border-color);
+}
+body.dark-theme .diary-detail .diary-tag {
+  background: rgba(255,143,171,0.12);
+  color: #ff8fab;
+  border: 1px solid var(--border-color);
+}
+body.dark-theme .diary-detail .diary-author span {
+  color: var(--text-color-medium);
+}
+body.dark-theme .diary-title,
+body.dark-theme .diary-content {
+  color: var(--text-color-light);
+}
+body.dark-theme .diary-mood {
+  color: #ff8fab;
+}
+
+/* 黑暗主题 - 图片上传区域 */
+body.dark-theme .image-upload-area {
+  border-color: var(--border-color);
+  background: rgba(58, 64, 75, 0.5);
+}
+
+body.dark-theme .image-upload-area:hover {
+  border-color: #ff6b9d;
+}
+
+body.dark-theme .upload-placeholder {
+  background: rgba(255, 107, 157, 0.08);
+  border-color: var(--border-color);
+}
+
+body.dark-theme .upload-placeholder:hover {
+  border-color: #ff6b9d;
+  background: rgba(255, 107, 157, 0.12);
+}
+
+body.dark-theme .preview-image {
+  border-color: var(--border-color);
+} 

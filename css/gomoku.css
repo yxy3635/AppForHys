@@ -1,0 +1,425 @@
+body {
+    margin: 0;
+    font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+    background: #f7f7fa;
+    color: #222;
+}
+body.dark-theme {
+    background: linear-gradient(135deg, #181c24 0%, #23242a 100%) !important;
+    color: #f2f2fa;
+}
+body.dark-theme::before {
+    content: '';
+    position: fixed !important;
+    left: 0 !important; top: 0 !important; right: 0 !important; bottom: 0 !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+    display: block !important;
+    background:
+        radial-gradient(circle at 80% 20%, #ffbfa822 0%, transparent 60%),
+        radial-gradient(circle at 15% 70%, #ff6f9122 0%, transparent 70%),
+        radial-gradient(circle at 60% 80%, #fff2 0%, transparent 80%),
+        repeating-radial-gradient(circle at 50% 50%, #fff2 0 1px, transparent 1px 100px) !important;
+    opacity: 0.35 !important;
+}
+.gomoku-header {
+    display: flex;
+    align-items: center;
+    height: 52px;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    padding: 0 18px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-radius: 0 0 18px 18px;
+    animation: fadeInDown 0.5s;
+}
+body.dark-theme .gomoku-header {
+    background: #23242a;
+    box-shadow: 0 2px 12px #0006;
+}
+.gomoku-back {
+    border: none;
+    background: none;
+    color: #4f8cff;
+    margin-right: 14px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(79,140,255,0.08);
+    outline: none;
+}
+.gomoku-back:hover, .gomoku-back:focus {
+    background: #e6f0ff;
+    color: #2566d6;
+    box-shadow: 0 4px 16px rgba(79,140,255,0.15);
+}
+.gomoku-back svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+}
+.gomoku-back:hover svg path,
+.gomoku-back:focus svg path {
+    stroke: #2566d6;
+}
+.gomoku-title {
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+body.dark-theme .gomoku-title {
+    color: #f2f2fa;
+}
+.gomoku-main {
+    padding: 0 0 24px 0;
+}
+.gomoku-room-list {
+    max-width: 500px;
+    margin: 32px auto 0 auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    padding: 28px 18px 18px 18px;
+    animation: fadeInUp 0.6s cubic-bezier(.23,1.02,.53,.97);
+}
+body.dark-theme .gomoku-room-list {
+    background: #23242a;
+    box-shadow: 0 4px 24px #0008;
+}
+.gomoku-room-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 500;
+}
+#roomListContainer {
+    min-height: 60px;
+}
+.gomoku-room-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 17px;
+    transition: background 0.2s;
+    border-radius: 12px;
+    animation: fadeInUp 0.5s;
+}
+body.dark-theme .gomoku-room-item {
+    border-bottom: 1px solid #23242a;
+    color: #e0e6f0;
+}
+.gomoku-room-item:last-child {
+    border-bottom: none;
+}
+.gomoku-room-name {
+    font-weight: 600;
+    color: #2566d6;
+    letter-spacing: 1px;
+}
+body.dark-theme .gomoku-room-name {
+    color: #7bb6ff;
+}
+.gomoku-join-btn {
+    background: linear-gradient(90deg, #4f8cff, #00c6ff);
+    color: #fff;
+    border: none;
+    border-radius: 18px;
+    padding: 6px 22px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(79,140,255,0.10);
+    transition: background 0.2s, transform 0.1s;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+body.dark-theme .gomoku-join-btn {
+    background: linear-gradient(90deg, #4f8cff, #2566d6);
+    color: #fff;
+    box-shadow: 0 2px 8px #1a2a4f44;
+}
+.gomoku-join-btn:active {
+    transform: scale(0.96);
+}
+.gomoku-join-btn:disabled {
+    background: #d1e3ff;
+    color: #aaa;
+    cursor: not-allowed;
+}
+body.dark-theme .gomoku-join-btn:disabled {
+    background: #2d3550;
+    color: #888;
+}
+.gomoku-join-btn::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 0; height: 0;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    transition: width 0.3s, height 0.3s;
+    pointer-events: none;
+}
+.gomoku-join-btn:active::after {
+    width: 120%; height: 120%;
+}
+.loading {
+    text-align: center;
+    color: #888;
+    padding: 18px 0;
+    font-size: 16px;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.gomoku-game-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 16px;
+    animation: fadeIn 0.6s;
+}
+body.dark-theme .gomoku-game-header {
+    color: #e0e6f0;
+}
+.gomoku-exit-btn {
+    align-self: flex-start;
+    margin-bottom: 10px;
+    background: none;
+    border: none;
+    color: #4f8cff;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 14px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+    font-weight: 500;
+}
+body.dark-theme .gomoku-exit-btn {
+    color: #7bb6ff;
+}
+body.dark-theme .gomoku-exit-btn:hover, body.dark-theme .gomoku-exit-btn:focus {
+    background: #1a2233;
+    color: #4f8cff;
+}
+.gomoku-players {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+.gomoku-player {
+    padding: 3px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 17px;
+    transition: background 0.2s, color 0.2s;
+}
+.gomoku-player.black {
+    color: #333;
+}
+body.dark-theme .gomoku-player.black {
+    color: #f2f2fa;
+}
+.gomoku-player.white {
+    color: #4f8cff;
+}
+body.dark-theme .gomoku-player.white {
+    color: #7bb6ff;
+}
+.gomoku-player.active {
+    background: linear-gradient(90deg, #e6f0ff, #d1e3ff);
+    color: #2566d6;
+    box-shadow: 0 2px 8px rgba(79,140,255,0.10);
+}
+body.dark-theme .gomoku-player.active {
+    background: linear-gradient(90deg, #1a2233, #23242a);
+    color: #4f8cff;
+    box-shadow: 0 2px 8px #1a2a4f44;
+}
+.vs {
+    margin: 0 10px;
+    color: #bbb;
+    font-size: 17px;
+}
+body.dark-theme .vs {
+    color: #444a5a;
+}
+.gomoku-turn-info {
+    font-size: 15px;
+    color: #4f8cff;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+body.dark-theme .gomoku-turn-info {
+    color: #7bb6ff;
+}
+.gomoku-board-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 18px auto;
+    width: 100%;
+    max-width: 440px;
+    animation: fadeInUp 0.7s cubic-bezier(.23,1.02,.53,.97);
+}
+.gomoku-board {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    grid-template-rows: repeat(15, 1fr);
+    background: #f9e7c2;
+    border: 2.5px solid #d1b97f;
+    border-radius: 14px;
+    width: 100vw;
+    max-width: 420px;
+    aspect-ratio: 1 / 1;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    position: relative;
+    animation: boardPopIn 0.7s cubic-bezier(.23,1.02,.53,.97);
+}
+body.dark-theme .gomoku-board {
+    background: #2d2e36;
+    border-color: #444a5a;
+    box-shadow: 0 4px 24px #000a;
+}
+@keyframes boardPopIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+}
+.gomoku-cell {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #e2c88b;
+    box-sizing: border-box;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.15s;
+    z-index: 1;
+}
+body.dark-theme .gomoku-cell {
+    border: 1px solid #444a5a;
+    background: transparent;
+}
+.gomoku-cell:hover {
+    background: #f5e1b8;
+    z-index: 2;
+}
+body.dark-theme .gomoku-cell:hover {
+    background: #23242a;
+}
+.gomoku-stone {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    transition: box-shadow 0.2s, transform 0.2s;
+    animation: stonePop 0.25s cubic-bezier(.23,1.02,.53,.97);
+}
+@keyframes stonePop {
+    from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+    to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+.gomoku-stone.black {
+    background: #fff;
+    border: 2px solid #ddd;
+}
+body.dark-theme .gomoku-stone.black {
+    background: #f0f0f0;
+    border: 2px solid #ccc;
+}
+.gomoku-stone.white {
+    background: #7bb6ff;
+    border: 2px solid #4f8cff;
+}
+body.dark-theme .gomoku-stone.white {
+    background: #6ba6ef;
+    border: 2px solid #4f8cff;
+}
+.gomoku-stone.last {
+    box-shadow: 0 0 0 3px #4f8cff;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+.gomoku-stone.shadow.black {
+    opacity: 0.4;
+    box-shadow: none;
+    border: 2px dashed #4f8cff;
+    background: #fff;
+}
+body.dark-theme .gomoku-stone.shadow.black {
+    border: 2px dashed #4f8cff;
+    background: #f0f0f0;
+}
+.gomoku-stone.shadow.white {
+    opacity: 0.7;
+    box-shadow: none;
+    border: 2px dashed #888;
+    background: #7bb6ff;
+}
+body.dark-theme .gomoku-stone.shadow.white {
+    border: 2px dashed #888;
+    background: #6ba6ef;
+}
+.gomoku-game-msg {
+    text-align: center;
+    color: #e74c3c;
+    font-size: 16px;
+    margin-top: 8px;
+    min-height: 24px;
+    font-weight: 500;
+    animation: fadeIn 0.4s;
+}
+body.dark-theme .gomoku-game-msg {
+    color: #ffb3b3;
+}
+.gomoku-empty {
+    background: #f5f8ff;
+    color: #8ca2c7;
+    border-radius: 12px;
+    padding: 18px 0;
+    margin: 12px 0;
+    font-size: 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(79,140,255,0.06);
+    letter-spacing: 1px;
+}
+body.dark-theme .gomoku-empty {
+    background: #23242a;
+    color: #6a7a99;
+    box-shadow: 0 2px 8px #0003;
+}
+@media (max-width: 600px) {
+    .gomoku-room-list {
+        margin: 12px 4px 0 4px;
+        padding: 16px 4px 10px 4px;
+    }
+    .gomoku-board-wrapper {
+        max-width: 98vw;
+    }
+    .gomoku-board {
+        max-width: 98vw;
+    }
+} 

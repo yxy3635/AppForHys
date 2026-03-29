@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你画我猜 - YandH</title>
+    <link rel="stylesheet" href="css/draw-guess.css">
+    <link rel="stylesheet" href="css/gomoku.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <script src="js/config.js"></script>
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <div id="drawRoomList" class="draw-container">
+        <header class="gomoku-header">
+            <button id="drawBackBtn" class="gomoku-back">←</button>
+            <span class="gomoku-title">你画我猜</span>
+        </header>
+        <div class="gomoku-room-list">
+            <div class="gomoku-room-list-header">
+                <span>房间列表</span>
+                <div style="display:flex;gap:10px;">
+                    <button id="createDrawRoomBtn" class="gomoku-join-btn" style="padding:8px 16px;">＋ 创建房间</button>
+                    <button id="refreshDrawRoomsBtn" class="gomoku-join-btn" style="padding:8px 16px;background:linear-gradient(90deg,#7aa2f7,#4f8cff);">刷新</button>
+                </div>
+            </div>
+            <div id="drawRoomsList"></div>
+        </div>
+    </div>
+
+    <div id="drawGameArea" class="draw-container" style="display: none;">
+        <div class="draw-header">
+            <button id="drawExitBtn" class="draw-back-btn">←</button>
+            <h2 id="drawRoomTitle">序号: Loading...</h2>
+            <div class="draw-status" id="drawGameStatus">等待开始...</div>
+        </div>
+
+        <div class="draw-game-info">
+            <div class="draw-players">
+                <div class="draw-player" id="drawPlayer1">
+                    <span class="draw-player-name">等待玩家</span>
+                    <span class="draw-player-score">0分</span>
+                </div>
+                <div class="vs">VS</div>
+                <div class="draw-player" id="drawPlayer2">
+                    <span class="draw-player-name">等待玩家</span>
+                    <span class="draw-player-score">0分</span>
+                </div>
+            </div>
+            
+            <div class="draw-game-controls">
+                <div class="draw-word-hint" id="drawWordHint">准备开始游戏</div>
+                <div class="draw-guess-attempts" id="drawGuessAttempts" style="display: none;">猜测机会: 5/5</div>
+                <div class="draw-control-buttons">
+                    <button id="drawStartBtn" class="draw-btn draw-btn-primary" style="display: none;">开始游戏</button>
+                    <button id="drawSkipBtn" class="draw-btn draw-btn-warning" style="display: none;">跳过此题</button>
+                    <button id="drawEndBtn" class="draw-btn draw-btn-danger" style="display: none;">结束比赛</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="draw-main-area">
+            <div class="draw-canvas-area">
+                <div class="draw-tools">
+                    <button class="draw-tool active" data-tool="pen" title="画笔">🖊️</button>
+                    <button class="draw-tool" data-tool="eraser" title="橡皮">🧹</button>
+                    <input type="color" id="drawColorPicker" value="#000000" title="颜色">
+                    <input type="range" id="drawBrushSize" min="1" max="20" value="3" title="画笔大小">
+                    <button id="drawClearBtn" class="draw-tool" title="清空画板">🗑️</button>
+                    <button id="drawHelpBtn" class="draw-tool" title="使用说明">❔</button>
+                </div>
+                <canvas id="drawCanvas" width="800" height="600"></canvas>
+                <div class="draw-canvas-disabled" id="drawCanvasDisabled" style="display: none;">
+                    <p>到你猜啦~</p>
+                    <p>答案在下面输入噢！</p>
+                </div>
+            </div>
+
+            <div class="draw-chat-area">
+                <div class="draw-chat-header">💬 聊天&猜词</div>
+                <div class="draw-chat-messages" id="drawChatMessages">
+                    <div class="draw-system-message">又和宝宝一起玩游戏拉~</div>
+                </div>
+                <div class="draw-chat-input">
+                    <input type="text" id="drawChatInput" placeholder="输入你的答案..." maxlength="100">
+                    <button id="drawSendBtn">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/pages/draw-guess.js"></script>
+</body>
+</html>

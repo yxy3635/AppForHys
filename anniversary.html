@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>纪念日</title>
+  <link rel="stylesheet" href="css/anniversary.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <script src="js/config.js"></script>
+  <script src="js/notification-native.js"></script>
+  <script src="js/global-notification.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/lunar-calendar.js"></script>
+  <script src="js/snow.js"></script>
+  <script src="js/snow-init.js"></script>
+</head>
+<body>
+  <header class="home-header">
+    <span>纪念日</span>
+  </header>
+  <main>
+    <!-- 主要纪念日卡片 -->
+    <div class="anniv-info anniv-fancy">
+      <div class="anniv-title">💕 我们已经在一起</div>
+      <div class="anniv-days-row">
+        <span id="days-count" class="anniv-days">0</span>
+        <span class="anniv-days-label">天</span>
+      </div>
+      <div class="anniv-subtitle">希望我们永远在一起~</div>
+    </div>
+
+    <!-- 新的添加按钮设计 -->
+    <div class="add-anniversary-container">
+      <button id="add-anniv-btn" onclick="showAddAnniversaryModal()" class="add-btn-modern">
+        <span class="add-btn-icon">✨</span>
+        <span class="add-btn-text">添加新纪念日</span>
+        <span class="add-btn-plus">+</span>
+      </button>
+    </div>
+
+    <div id="add-anniversary-modal" class="modal hide">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>✨ 添加新纪念日</h2>
+          <button class="modal-close" onclick="hideAddAnniversaryModal()">&times;</button>
+        </div>
+        <label for="new-anniv-name">事件名称：</label>
+        <input type="text" id="new-anniv-name" placeholder="例如：社区成立日">
+
+        <label for="date-type">日期类型：</label>
+        <div class="date-type-selector">
+          <input type="radio" id="solar-date" name="date-type" value="solar" checked>
+          <label for="solar-date">公历</label>
+          <input type="radio" id="lunar-date" name="date-type" value="lunar">
+          <label for="lunar-date">农历</label>
+        </div>
+
+        <div id="solar-date-section">
+          <label for="new-anniv-date-input">公历日期：</label>
+          <input type="date" id="new-anniv-date-input">
+        </div>
+
+        <div id="lunar-date-section" style="display: none;">
+          <label>农历日期：</label>
+          <div class="lunar-date-inputs">
+            <select id="lunar-year" style="width: 80px;">
+              <option value="">年</option>
+            </select>
+            <select id="lunar-month" style="width: 70px;">
+              <option value="">月</option>
+            </select>
+            <select id="lunar-day" style="width: 70px;">
+              <option value="">日</option>
+            </select>
+            <label style="font-size: 14px;">
+              <input type="checkbox" id="lunar-leap"> 闰月
+            </label>
+          </div>
+          <div class="lunar-preview" id="lunar-preview"></div>
+        </div>
+
+        <label for="new-anniv-description">描述 (可选)：</label>
+        <textarea id="new-anniv-description" placeholder="关于这个纪念日的简要描述..."></textarea>
+
+        <input type="hidden" id="editing-anniv-id">
+
+        <div class="modal-actions">
+          <button class="btn-save" onclick="saveAnniversary()">
+            <span class="btn-icon">💾</span>
+            保存
+          </button>
+          <button class="btn-cancel" onclick="hideAddAnniversaryModal()">
+            <span class="btn-icon">❌</span>
+            取消
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="public-anniversaries-section">
+      <h2>所有纪念日</h2>
+      <div id="public-anniversaries-list"></div>
+    </div>
+
+  </main>
+  <nav id="bottom-nav">
+    <button onclick="goHome()">主页</button>
+    <button onclick="goInteraction()">互动</button>
+    <button class="active" onclick="goAnniversary()">纪念日</button>
+    <button onclick="goProfile()">我的</button>
+  </nav>
+  <script src="js/modal.js"></script>
+  <script src="js/pages/anniversary.js"></script>
+  <script src="js/pages/nav-unread.js"></script>
+  <script src="js/nav-indicator.js"></script>
+  <script>
+    document.addEventListener('plusready', function(){
+      plus.key.addEventListener('backbutton', function(){
+        history.back();
+      }, false);
+    });
+    function goHome() { window.location.href = 'home.html'; }
+    function goInteraction() { window.location.href = 'interaction.html'; }
+    function goAnniversary() { window.location.href = 'anniversary.html'; }
+    function goProfile() { window.location.href = 'profile.html'; }
+    document.addEventListener('DOMContentLoaded', function() {
+      var currentUserId = localStorage.getItem('user_id');
+      updateInteractionExclaimOnce(currentUserId);
+    });
+  </script>
+</body>
+</html> 

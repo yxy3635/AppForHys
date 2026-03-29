@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>HandY 登录注册</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <script src="js/config.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/notification-native.js"></script>
+    <script src="js/global-notification.js"></script>
+    <script type="text/javascript">
+    	
+   		document.addEventListener('plusready', function(){
+   			//console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。")
+   			plus.key.addEventListener('backbutton', function(){
+   				plus.runtime.quit();
+   			}, false);
+   			
+   			checkAppVersion(); 
+   			
+            const userId = localStorage.getItem('user_id');
+            const loginTimestamp = localStorage.getItem('login_timestamp');
+
+            if (userId && loginTimestamp) {
+                const now = Date.now();
+                const ONE_DAY_IN_MS = 72 * 60 * 60 * 1000; // 72 小时清除
+
+                if (now - parseInt(loginTimestamp) < ONE_DAY_IN_MS) {
+                    window.location.href = 'home.html';
+                } else {
+                    localStorage.removeItem('user_id');
+                    localStorage.removeItem('username');
+                    localStorage.removeItem('login_timestamp');
+                }
+            } else {
+            }
+   		});
+   		
+   		// Function to check app version
+   		function checkAppVersion() {
+   			const API_URL = APP_CONFIG.VERSION_CHECK_URL;
+   			
+   			plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+   				const currentVersion = inf.version;
+   				
+   				fetch(API_URL)
+   					.then(response => response.json())
+   					.then(data => {
+   						if (data && data.version && data.downloadUrl) {
+   							const latestVersion = data.version;
+   							const description = data.description || '有新版本可用。';
+   							const downloadUrl = data.downloadUrl;
+   							const forceUpdate = data.forceUpdate || false;
+   							
+   							// Simple version comparison (e.g., '2.2.14' > '2.2.13')
+   							// For more complex comparisons (e.g., handling '2.10' vs '2.2'), a dedicated function might be needed
+   							const needsUpdate = compareVersions(currentVersion, latestVersion);
+   							
+   							if (needsUpdate) {
+   								let buttons = ['立即更新'];
+   								if (!forceUpdate) {
+   									buttons.push('以后再说');
+   								}
+   								
+   								plus.nativeUI.confirm(description, function(e) {
+   									if (e.index === 0) { // Clicked '立即更新'
+   										plus.runtime.openURL(downloadUrl);
+   									} else if (forceUpdate) {
+   										// If forced update and user cancels, quit the app
+   										plus.runtime.quit();
+   									}
+   								}, '版本更新', buttons);
+   							}
+   						}
+   					})
+   					.catch(error => {
+   						console.error('检查更新失败:', error);
+   					});
+   			});
+   		}
+   		
+   		// Helper function to compare semantic versions (e.g., 2.2.14 vs 2.2.13)
+   		function compareVersions(current, latest) {
+   			const currentParts = current.split('.').map(Number);
+   			const latestParts = latest.split('.').map(Number);
+   			
+   			for (let i = 0; i < latestParts.length; i++) {
+   				if (currentParts[i] === undefined || latestParts[i] > currentParts[i]) {
+   					return true; // Latest is greater
+   				} else if (latestParts[i] < currentParts[i]) {
+   					return false; // Current is greater or equal
+   				}
+   			}
+   			return false; // Versions are equal
+   		}
+   		
+    </script>
+</head>
+<body>
+  <!-- 背景动画层 -->
+  <div class="background-animation">
+    <div class="particles"></div>
+    <div class="sphere sphere-1"></div>
+    <div class="sphere sphere-2"></div>
+    <div class="sphere sphere-3"></div>
+    <div class="sphere sphere-4"></div>
+    <div class="sphere sphere-5"></div>
+    <div class="sphere sphere-6"></div>
+  </div>
+  
+  <div id="login-box">
+    <h2>登录</h2>
+    <input type="text" id="login-username" placeholder="用户名">
+    <input type="password" id="login-password" placeholder="密码">
+    <button onclick="login()">登录</button>
+    <p>没有账号？<a href="#" onclick="showRegister()">注册</a></p>
+  </div>
+  <div id="register-box" style="display:none;">
+    <h2>注册</h2>
+    <input type="text" id="register-username" placeholder="用户名">
+    <input type="password" id="register-password" placeholder="密码">
+    <button onclick="register()">注册</button>
+    <p>已有账号？<a href="#" onclick="showLogin()">登录</a></p>
+  </div>
+  <script src="js/modal.js"></script>
+  <script src="js/pages/login.js"></script>
+  <script>
+    // 创建粒子效果
+    function createParticles() {
+      const particlesContainer = document.querySelector('.particles');
+      if (!particlesContainer) return;
+      
+      // 根据屏幕大小调整粒子数量
+      const particleCount = window.innerWidth < 480 ? 25 : window.innerWidth < 768 ? 35 : 50;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // 随机位置
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = (Math.random() * 50 + 50) + '%'; // 从下半部分开始
+        
+        // 随机动画延迟和时长
+        particle.style.animationDelay = Math.random() * 2 + 's';
+        particle.style.animationDuration = (3 + Math.random() * 4) + 's';
+        
+        // 随机大小
+        const size = 2 + Math.random() * 3;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        
+        // 随机透明度
+        const opacity = 0.4 + Math.random() * 0.4;
+        particle.style.opacity = opacity;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // 页面加载完成后创建粒子
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', createParticles);
+    } else {
+      createParticles();
+    }
+  </script>
+</body>
+</html>

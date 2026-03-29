@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>发布动态</title>
+  <link rel="stylesheet" href="css/post.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <script src="js/config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/notification-native.js"></script>
+  <script src="js/global-notification.js"></script>
+  <script src="js/snow.js"></script>
+  <script src="js/snow-init.js"></script>
+</head>
+<body>
+  <header class="home-header">
+    <button id="back-btn" onclick="goHome()">返回</button>
+    <img id="user-avatar" class="header-avatar" src="img/default-avatar.png" alt="用户头像">
+    <span>发布动态</span>
+    <button id="submit-btn" onclick="submitPost()">发布</button>
+  </header>
+  <main class="page-bounce-in">
+    <div id="upload-progress" style="display:none; text-align:center; margin-top: 10px; font-size: 14px; color: #555;"></div>
+    <textarea id="post-text" placeholder="说点什么吧..." maxlength="500"></textarea>
+    <div class="media-upload">
+      <input type="file" id="img-upload" accept="image/*" multiple style="display:none;">
+      <button onclick="document.getElementById('img-upload').click()">添加图片</button>
+      <input type="file" id="video-upload" accept="video/*" multiple style="display:none;">
+      <button onclick="document.getElementById('video-upload').click()">添加视频</button>
+    </div>
+    <div id="media-preview"></div>
+    <p class="hint-message">视频和图片只能二选一，我还没搞明白怎么一起</p>
+    <p class="hint-message">视频一次只能传一个，图片可以传多个</p>
+  </main>
+  <script src="js/modal.js"></script>
+  <script src="js/pages/post.js"></script>
+  <script type="text/javascript">
+    document.addEventListener('plusready', function(){
+      plus.key.addEventListener('backbutton', function(){
+        history.back();
+      }, false);
+    });
+  </script>
+  <script>
+    function goHome() { window.location.href = 'home.html'; }
+    function goInteraction() { window.location.href = 'interaction.html'; }
+    function goAnniversary() { window.location.href = 'anniversary.html'; }
+    function goProfile() { window.location.href = 'profile.html'; }
+  </script>
+</body>
+</html> 
