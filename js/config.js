@@ -1,20 +1,20 @@
 // 主要的后端配置
 const APP_CONFIG = {
     // 服务器基础地址
-    SERVER_BASE: 'http://38.207.133.8',
+    SERVER_BASE: 'xxx',
     
     // API 接口地址
-    API_BASE: 'http://38.207.133.8/api',
+    API_BASE: 'xxx/api',
     
     // 静态资源地址
-    AVATAR_BASE: 'http://38.207.133.8/',
+    AVATAR_BASE: 'xxx',
     
     // GIF 相关地址
-    GIF_BASE: 'http://38.207.133.8/gif/',
-    USER_EMOJI_BASE: 'http://38.207.133.8/gif/user_uploads/',
+    GIF_BASE: 'xxx/gif/',
+    USER_EMOJI_BASE: 'xxx/gif/user_uploads/',
     
-    // 其他服务地址
-    VERSION_CHECK_URL: 'http://38.207.133.8/appVersionCheck.php'
+    // 检查更新
+    VERSION_CHECK_URL: 'xxx/appVersionCheck.php'
 };
 
 // 为了兼容现有代码，设置全局变量
@@ -38,12 +38,12 @@ const ConfigHelper = {
     
     // 切换到生产环境
     setProduction: function() {
-        APP_CONFIG.SERVER_BASE = 'http://38.207.133.8';
-        APP_CONFIG.API_BASE = 'http://38.207.133.8/api';
-        APP_CONFIG.AVATAR_BASE = 'http://38.207.133.8/';
-        APP_CONFIG.GIF_BASE = 'http://38.207.133.8/gif/';
-        APP_CONFIG.USER_EMOJI_BASE = 'http://38.207.133.8/gif/user_uploads/';
-        APP_CONFIG.VERSION_CHECK_URL = 'http://38.207.133.8/appVersionCheck.php';
+        APP_CONFIG.SERVER_BASE = 'http://xxx';
+        APP_CONFIG.API_BASE = 'http://xxx/api';
+        APP_CONFIG.AVATAR_BASE = 'http://xxx/';
+        APP_CONFIG.GIF_BASE = 'http://xxx/gif/';
+        APP_CONFIG.USER_EMOJI_BASE = 'http://xxx/gif/user_uploads/';
+        APP_CONFIG.VERSION_CHECK_URL = 'http://xxx/appVersionCheck.php';
         this.updateGlobalVars();
     },
     
